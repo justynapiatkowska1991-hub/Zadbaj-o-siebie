@@ -80,7 +80,7 @@ header{padding:20px 20px 8px}
 </style>
 <style>
 .dailyquote{font-style:italic;color:#6f696d;line-height:1.55;margin-top:8px}.quickgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.quick{padding:16px;border-radius:18px;background:#fff7f9;text-align:left;color:var(--text)}.quick span{font-size:28px;display:block;margin-bottom:7px}.quick b{display:block}.quick small{color:#888}.levelnote{margin-top:10px;color:#777;font-size:13px}
-</style><style>.affirmation{background:linear-gradient(135deg,#f8e8ee,#fff);border:1px solid #f0d7df}.affirmation p{font-size:19px;line-height:1.5;margin:10px 0}.mini-actions{display:flex;gap:8px;flex-wrap:wrap}.mini-actions button{flex:1;min-width:120px}</style></head>
+</style><style>.affirmation{background:linear-gradient(135deg,#f8e8ee,#fff);border:1px solid #f0d7df}.affirmation p{font-size:19px;line-height:1.5;margin:10px 0}.mini-actions{display:flex;gap:8px;flex-wrap:wrap}.mini-actions button{flex:1;min-width:120px}</style><style>.badgegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.badge{padding:14px;border-radius:16px;border:1px solid #eadde1;background:#fff}.badge.locked{opacity:.45}.badge b{display:block;margin-bottom:5px}</style></head>
 <body>
 <div class="app">
 <header>
@@ -383,6 +383,11 @@ function toggleChallenge(id){
  else{state.tasks[key]=true;state.points+=x.p;toast("Wyzwanie ukończone 🏆 +"+x.p+" pkt")}
  save();renderAll();
 }
+function renderBadges(){
+ const p=state.points||0, s=state.streak||0, j=(state.journal||[]).length;
+ const items=[["🌱","Pierwszy krok",p>=10],["💗","Dbam o siebie",p>=50],["🌷","Kwiat troski",p>=100],["🔥","Wytrwała",s>=7],["🏆","Mistrzyni",p>=250],["📔","Piszę o sobie",j>=5]];
+ const el=document.getElementById("badgeGrid"); if(el) el.innerHTML=items.map(x=>'<div class="badge '+(x[2]?'':'locked')+'"><b>'+x[0]+' '+x[1]+'</b><small>'+(x[2]?'Zdobyta ✓':'Jeszcze przed Tobą')+'</small></div>').join("");
+}
 function renderSummary(){const done=allTasks().filter(x=>state.tasks[dayKey(x.id)]).length;const mood=state.moodHistory.find(x=>x.date===today());const a=document.getElementById("summaryTasks"),b=document.getElementById("summaryPoints"),m=document.getElementById("summaryMood"),t=document.getElementById("summaryText");if(!a)return;a.textContent=done;b.textContent=state.points;m.textContent=mood?mood.e:"—";t.textContent=done>0?"Zrobiłaś dziś coś dla siebie. To się liczy. 💗":"Nie szkodzi, jeśli dzień był trudny. Możesz zacząć od jednej małej rzeczy. 🌷"}\nfunction choosePlan(){const plans=["10 minut spaceru bez telefonu 🌿","Zrób sobie spokojną herbatę i odpocznij 10 minut ☕","Zapisz w dzienniku jedną rzecz, którą dziś czujesz 📔","Zrób 5 spokojnych oddechów i rozluźnij ramiona 🧘","Powiedz sobie jedno dobre zdanie 💗","Odłóż telefon na 15 minut i pobądź ze sobą 🌷"];const p=plans[Math.floor(Math.random()*plans.length)];localStorage.setItem("dailyPlan",p);const el=document.getElementById("planText");if(el)el.textContent=p;toast("Plan wybrany ✨")}
 function completePlan(){const p=localStorage.getItem("dailyPlan");if(!p)return toast("Najpierw wylosuj plan ✨");if(localStorage.getItem("dailyPlanDone")===today())return toast("Dzisiejszy plan już ukończony 💗");localStorage.setItem("dailyPlanDone",today());addPoints(10);toast("Brawo! +10 punktów 💗")}
 function restorePlan(){const p=localStorage.getItem("dailyPlan");const el=document.getElementById("planText");if(el&&p)el.textContent=p}
@@ -429,7 +434,7 @@ function renderStats(){
  document.getElementById("level").textContent=Math.floor(state.points/100)+1;
 }
 function renderAll(){
- ensureDay();renderMoods();renderTasks();renderStats();renderDailyQuote();renderChart();restorePlan();renderSummary();renderHistory();renderChallenges();renderJournal();renderProfile();
+ ensureDay();renderMoods();renderTasks();renderStats();renderDailyQuote();renderChart();restorePlan();renderSummary();renderBadges();renderHistory();renderChallenges();renderJournal();renderProfile();
 }
 renderAll();
 </script>
