@@ -373,4 +373,979 @@ header p {
 input {
     width: 100%;
     padding: 16px;
-    border: 1px solid #
+    border: 1px solid #eee;
+    border-radius: 15px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.section-title {
+    margin-top: 28px;
+    margin-bottom: 12px;
+}
+
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 95px;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 13px 20px;
+    border-radius: 20px;
+    display: none;
+    z-index: 100;
+    font-size: 14px;
+}
+
+@media(max-width:400px) {
+    .hero h2 {
+        font-size: 26px;
+    }
+
+    .moods {
+        gap: 4px;
+    }
+
+    .mood {
+        font-size: 23px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+    <h1 id="greeting">Dzień dobry 🌷</h1>
+    <p>Znajdź dziś chwilę tylko dla siebie.</p>
+</header>
+
+<!-- START -->
+
+<section id="start" class="screen active">
+
+<div class="hero">
+    <small>TWOJA CHWILA NA DZIŚ</small>
+
+    <h2>Nie musisz zrobić wszystkiego. Wystarczy, że zadbasz dziś o siebie.</h2>
+
+    <p>
+        Mały krok też jest krokiem. Wybierz jedną rzecz,
+        którą możesz zrobić dla siebie.
+    </p>
+
+    <button class="primary" onclick="chooseForMe()">
+        ✨ Wybierz coś dla mnie
+    </button>
+</div>
+
+<div class="card">
+    <h2>Jak się dziś czujesz?</h2>
+
+    <div class="moods">
+
+        <button class="mood" onclick="selectMood('Świetnie','🤩',5,this)">
+            🤩
+            <span>Świetnie</span>
+        </button>
+
+        <button class="mood" onclick="selectMood('Dobrze','😊',4,this)">
+            😊
+            <span>Dobrze</span>
+        </button>
+
+        <button class="mood" onclick="selectMood('Średnio','😐',3,this)">
+            😐
+            <span>Średnio</span>
+        </button>
+
+        <button class="mood" onclick="selectMood('Smutno','😔',2,this)">
+            😔
+            <span>Smutno</span>
+        </button>
+
+        <button class="mood" onclick="selectMood('Trudno','😣',1,this)">
+            😣
+            <span>Trudno</span>
+        </button>
+
+    </div>
+</div>
+
+<div class="card">
+    <h2>🌷 Myśl na dziś</h2>
+    <p id="dailyQuote">
+        Nie musisz być silna cały czas. Możesz po prostu być.
+    </p>
+</div>
+
+</section>
+
+
+<!-- EMOCJE -->
+
+<section id="emotions" class="screen">
+
+<div class="card">
+    <h2>💕 Twoje emocje</h2>
+
+    <p>
+        Zapisuj swoje samopoczucie. Z czasem zobaczysz,
+        jak zmienia się Twój nastrój.
+    </p>
+
+    <div class="stats">
+        <div class="stat">
+            <strong id="moodAverage">–</strong>
+            <span>średnia</span>
+        </div>
+
+        <div class="stat">
+            <strong id="moodCount">0</strong>
+            <span>wpisów</span>
+        </div>
+
+        <div class="stat">
+            <strong id="goodDays">0</strong>
+            <span>dobrych dni</span>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>📖 Historia</h2>
+
+    <div id="history" class="mood-history">
+        <div class="empty">
+            Nie masz jeszcze zapisanych emocji.
+        </div>
+    </div>
+</div>
+
+</section>
+
+
+<!-- RELAKS -->
+
+<section id="relax" class="screen">
+
+<div class="card">
+
+    <h2>🧘 Chwila relaksu</h2>
+
+    <p>
+        Zatrzymaj się na chwilę. Wybierz ćwiczenie,
+        którego potrzebujesz teraz.
+    </p>
+
+    <div class="relax-options">
+
+        <button class="relax-btn" onclick="startBreathing()">
+            <strong>🌬️ Spokojny oddech</strong>
+            <span>2 minuty wyciszenia</span>
+        </button>
+
+        <button class="relax-btn" onclick="relaxMessage('Zamknij oczy. Weź spokojny wdech przez nos i powoli wypuść powietrze. Powtórz kilka razy.')">
+            <strong>🌿 Chwila uważności</strong>
+            <span>Skup się na tym, co dzieje się teraz.</span>
+        </button>
+
+        <button class="relax-btn" onclick="relaxMessage('Połóż się wygodnie. Rozluźnij ramiona, szczękę i dłonie. Pozwól sobie przez chwilę niczego nie robić.')">
+            <strong>💗 Odpoczynek</strong>
+            <span>Nic nie musisz. Po prostu odpocznij.</span>
+        </button>
+
+    </div>
+
+</div>
+
+<div id="breathingBox" class="card breathing" style="display:none">
+
+    <h2>🌬️ Oddychamy razem</h2>
+
+    <div class="breath-circle" id="breathCircle">
+        Oddychaj
+    </div>
+
+    <div class="timer" id="breathTimer">120</div>
+
+    <p id="breathInstruction">
+        Przygotuj się...
+    </p>
+
+    <button class="primary" onclick="stopBreathing()">
+        Zakończ ćwiczenie
+    </button>
+
+</div>
+
+</section>
+
+
+<!-- WYZWANIA -->
+
+<section id="challenges" class="screen">
+
+<div class="card">
+    <h2>🌱 Wyzwania</h2>
+
+    <p>
+        Małe codzienne działania mogą stworzyć wielką zmianę.
+    </p>
+</div>
+
+<div id="challengeList"></div>
+
+</section>
+
+
+<!-- PROFIL -->
+
+<section id="profile" class="screen">
+
+<div class="card profile-head">
+
+    <div class="avatar">🌷</div>
+
+    <div class="profile-name" id="profileName">
+        Moja Chwila
+    </div>
+
+    <p>Zadbaj o siebie. Krok po kroku.</p>
+
+</div>
+
+<div class="card">
+
+    <h2>🏆 Twój postęp</h2>
+
+    <div class="stats">
+
+        <div class="stat">
+            <strong id="points">0</strong>
+            <span>punktów</span>
+        </div>
+
+        <div class="stat">
+            <strong id="completedChallenges">0</strong>
+            <span>zadań</span>
+        </div>
+
+        <div class="stat">
+            <strong id="daysActive">0</strong>
+            <span>dni</span>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card">
+
+    <h2>👤 Twoje imię</h2>
+
+    <input id="nameInput" placeholder="Wpisz swoje imię">
+
+    <button class="primary" onclick="saveName()">
+        Zapisz
+    </button>
+
+</div>
+
+<div class="card">
+
+    <h2>🏅 Odznaki</h2>
+
+    <div class="badges">
+
+        <div class="badge locked" id="badge1">
+            <div class="badge-icon">🌱</div>
+            <small>Pierwszy krok</small>
+        </div>
+
+        <div class="badge locked" id="badge2">
+            <div class="badge-icon">💕</div>
+            <small>Dbam o siebie</small>
+        </div>
+
+        <div class="badge locked" id="badge3">
+            <div class="badge-icon">🔥</div>
+            <small>Zaangażowana</small>
+        </div>
+
+        <div class="badge locked" id="badge4">
+            <div class="badge-icon">🌟</div>
+            <small>Wytrwałość</small>
+        </div>
+
+        <div class="badge locked" id="badge5">
+            <div class="badge-icon">🧘</div>
+            <small>Spokój</small>
+        </div>
+
+        <div class="badge locked" id="badge6">
+            <div class="badge-icon">👑</div>
+            <small>Mistrzyni</small>
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- MENU -->
+
+<nav class="bottom-nav">
+
+<button class="nav-btn active" onclick="showScreen('start',this)">
+    <span class="icon">🏠</span>
+    Start
+</button>
+
+<button class="nav-btn" onclick="showScreen('emotions',this)">
+    <span class="icon">💕</span>
+    Emocje
+</button>
+
+<button class="nav-btn" onclick="showScreen('relax',this)">
+    <span class="icon">🧘</span>
+    Relaks
+</button>
+
+<button class="nav-btn" onclick="showScreen('challenges',this)">
+    <span class="icon">🌱</span>
+    Wyzwania
+</button>
+
+<button class="nav-btn" onclick="showScreen('profile',this)">
+    <span class="icon">👤</span>
+    Profil
+</button>
+
+</nav>
+
+</div>
+
+<div id="toast" class="toast"></div>
+
+
+<script>
+
+/* =========================
+   DANE
+========================= */
+
+let moods = JSON.parse(localStorage.getItem("mojeMoods")) || [];
+
+let points = Number(localStorage.getItem("mojePoints")) || 0;
+
+let completed = JSON.parse(localStorage.getItem("mojeChallenges")) || {};
+
+let userName = localStorage.getItem("mojeName") || "";
+
+let activeDays = JSON.parse(localStorage.getItem("activeDays")) || [];
+
+let breathingInterval = null;
+
+
+/* =========================
+   POWITANIE
+========================= */
+
+function setGreeting() {
+
+    const hour = new Date().getHours();
+
+    let greeting = "Dzień dobry 🌷";
+
+    if(hour >= 12 && hour < 18) {
+        greeting = "Dzień dobry 🌷";
+    }
+
+    if(hour >= 18) {
+        greeting = "Dobry wieczór 🌙";
+    }
+
+    document.getElementById("greeting").innerText = greeting;
+
+}
+
+setGreeting();
+
+
+/* =========================
+   NAWIGACJA
+========================= */
+
+function showScreen(id, button) {
+
+    document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+    });
+
+    document.getElementById(id).classList.add("active");
+
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    if(button) {
+        button.classList.add("active");
+    }
+
+    if(id === "emotions") {
+        renderHistory();
+    }
+
+    if(id === "challenges") {
+        renderChallenges();
+    }
+
+    if(id === "profile") {
+        updateProfile();
+    }
+
+    window.scrollTo(0,0);
+}
+
+
+/* =========================
+   WYBIERZ COŚ DLA MNIE
+========================= */
+
+const suggestions = [
+
+"🌿 Wyjdź na 10 minut na spacer.",
+
+"☕ Zrób sobie ulubioną herbatę i wypij ją bez telefonu.",
+
+"💗 Napisz jedną rzecz, za którą jesteś dziś wdzięczna.",
+
+"🧘 Zrób 2 minuty spokojnego oddechu.",
+
+"📵 Odłóż telefon na 20 minut.",
+
+"🎵 Włącz muzykę, którą naprawdę lubisz.",
+
+"🌷 Zrób dziś jedną małą rzecz tylko dla siebie.",
+
+"💧 Wypij szklankę wody i zatrzymaj się na chwilę.",
+
+"📖 Przeczytaj kilka stron książki.",
+
+"😊 Powiedz sobie coś dobrego."
+
+];
+
+function chooseForMe() {
+
+    const random =
+        suggestions[Math.floor(Math.random() * suggestions.length)];
+
+    showToast(random);
+
+}
+
+
+/* =========================
+   EMOCJE
+========================= */
+
+function selectMood(name, emoji, value, button) {
+
+    document.querySelectorAll(".mood").forEach(btn => {
+        btn.classList.remove("selected");
+    });
+
+    button.classList.add("selected");
+
+    const today = new Date().toLocaleDateString("pl-PL");
+
+    moods.push({
+        date: today,
+        name: name,
+        emoji: emoji,
+        value: value
+    });
+
+    localStorage.setItem("mojeMoods", JSON.stringify(moods));
+
+    activeDays.push(today);
+
+    activeDays = [...new Set(activeDays)];
+
+    localStorage.setItem(
+        "activeDays",
+        JSON.stringify(activeDays)
+    );
+
+    points += 5;
+
+    localStorage.setItem("mojePoints", points);
+
+    showToast("💗 Zapisano Twoje samopoczucie");
+
+    setTimeout(() => {
+        updateProfile();
+    },300);
+
+}
+
+
+/* =========================
+   HISTORIA EMOCJI
+========================= */
+
+function renderHistory() {
+
+    const box = document.getElementById("history");
+
+    if(moods.length === 0) {
+
+        box.innerHTML =
+        '<div class="empty">Nie masz jeszcze zapisanych emocji.</div>';
+
+        return;
+    }
+
+    const last = moods.slice(-15).reverse();
+
+    box.innerHTML = "";
+
+    last.forEach(item => {
+
+        const div = document.createElement("div");
+
+        div.className = "history-item";
+
+        div.innerHTML = `
+            <div class="history-left">
+                <span class="history-emoji">${item.emoji}</span>
+                <div>
+                    <strong>${item.name}</strong>
+                    <div style="color:#999;font-size:13px">
+                        ${item.date}
+                    </div>
+                </div>
+            </div>
+            <span>♥</span>
+        `;
+
+        box.appendChild(div);
+
+    });
+
+    const avg =
+        moods.reduce((sum,item) => sum + item.value,0) /
+        moods.length;
+
+    document.getElementById("moodAverage").innerText =
+        avg.toFixed(1);
+
+    document.getElementById("moodCount").innerText =
+        moods.length;
+
+    document.getElementById("goodDays").innerText =
+        moods.filter(item => item.value >= 4).length;
+
+}
+
+
+/* =========================
+   RELAKS
+========================= */
+
+function startBreathing() {
+
+    document.getElementById("breathingBox").style.display = "block";
+
+    let seconds = 120;
+
+    let phase = 0;
+
+    const circle = document.getElementById("breathCircle");
+
+    const timer = document.getElementById("breathTimer");
+
+    const instruction =
+        document.getElementById("breathInstruction");
+
+    clearInterval(breathingInterval);
+
+    breathingInterval = setInterval(() => {
+
+        seconds--;
+
+        timer.innerText = seconds;
+
+        phase++;
+
+        if(phase % 8 < 4) {
+
+            circle.classList.add("grow");
+
+            instruction.innerText =
+                "🌬️ Powoli nabierz powietrza...";
+
+        } else {
+
+            circle.classList.remove("grow");
+
+            instruction.innerText =
+                "🍃 Powoli wypuść powietrze...";
+
+        }
+
+        if(seconds <= 0) {
+
+            clearInterval(breathingInterval);
+
+            instruction.innerText =
+                "💗 Świetnie. Znalazłaś chwilę dla siebie.";
+
+            points += 15;
+
+            localStorage.setItem("mojePoints", points);
+
+            showToast("🌷 Ćwiczenie ukończone +15 punktów");
+
+        }
+
+    },1000);
+
+}
+
+function stopBreathing() {
+
+    clearInterval(breathingInterval);
+
+    document.getElementById("breathingBox").style.display = "none";
+
+}
+
+function relaxMessage(message) {
+
+    showToast(message);
+
+}
+
+
+/* =========================
+   WYZWANIA
+========================= */
+
+const challenges = [
+
+{
+    id:"water",
+    title:"💧 Zadbaj o nawodnienie",
+    text:"Wypij dziś odpowiednią ilość wody.",
+    points:10
+},
+
+{
+    id:"walk",
+    title:"🌿 10 minut dla siebie",
+    text:"Wyjdź na spokojny spacer.",
+    points:15
+},
+
+{
+    id:"phone",
+    title:"📵 Godzina bez telefonu",
+    text:"Odłóż telefon i daj głowie odpocząć.",
+    points:20
+},
+
+{
+    id:"gratitude",
+    title:"💗 3 rzeczy",
+    text:"Zapisz trzy rzeczy, za które jesteś wdzięczna.",
+    points:15
+},
+
+{
+    id:"relax",
+    title:"🧘 Chwila relaksu",
+    text:"Wykonaj krótkie ćwiczenie oddechowe.",
+    points:15
+},
+
+{
+    id:"kindness",
+    title:"🌷 Zrób coś dobrego",
+    text:"Zrób dziś coś miłego dla siebie.",
+    points:10
+}
+
+];
+
+function renderChallenges() {
+
+    const list =
+        document.getElementById("challengeList");
+
+    list.innerHTML = "";
+
+    challenges.forEach(challenge => {
+
+        const done = completed[challenge.id] || false;
+
+        const div = document.createElement("div");
+
+        div.className = "challenge";
+
+        div.innerHTML = `
+
+            <div class="challenge-top">
+
+                <div>
+
+                    <h3>${challenge.title}</h3>
+
+                    <p>${challenge.text}</p>
+
+                </div>
+
+                <button
+                    class="check-btn"
+                    onclick="completeChallenge('${challenge.id}',${challenge.points})"
+                    ${done ? "disabled" : ""}
+                >
+                    ${done ? "✓ Gotowe" : "Zrób"}
+                </button>
+
+            </div>
+
+            <div class="progress">
+
+                <div
+                    class="progress-bar"
+                    style="width:${done ? 100 : 0}%">
+                </div>
+
+            </div>
+
+        `;
+
+        list.appendChild(div);
+
+    });
+
+}
+
+function completeChallenge(id, challengePoints) {
+
+    if(completed[id]) return;
+
+    completed[id] = true;
+
+    localStorage.setItem(
+        "mojeChallenges",
+        JSON.stringify(completed)
+    );
+
+    points += challengePoints;
+
+    localStorage.setItem(
+        "mojePoints",
+        points
+    );
+
+    showToast(
+        "🏆 Zadanie wykonane! +" +
+        challengePoints +
+        " punktów"
+    );
+
+    renderChallenges();
+
+    updateProfile();
+
+}
+
+
+/* =========================
+   PROFIL
+========================= */
+
+function saveName() {
+
+    const input =
+        document.getElementById("nameInput");
+
+    const name = input.value.trim();
+
+    if(!name) {
+
+        showToast("Wpisz swoje imię ❤️");
+
+        return;
+    }
+
+    userName = name;
+
+    localStorage.setItem(
+        "mojeName",
+        userName
+    );
+
+    updateProfile();
+
+    showToast("🌷 Zapisano");
+
+}
+
+function updateProfile() {
+
+    if(userName) {
+
+        document.getElementById("profileName")
+            .innerText = userName;
+
+        document.getElementById("nameInput")
+            .value = userName;
+
+    }
+
+    document.getElementById("points")
+        .innerText = points;
+
+    document.getElementById("completedChallenges")
+        .innerText =
+        Object.values(completed)
+        .filter(Boolean).length;
+
+    document.getElementById("daysActive")
+        .innerText = activeDays.length;
+
+    updateBadges();
+
+}
+
+function updateBadges() {
+
+    const challengeCount =
+        Object.values(completed)
+        .filter(Boolean).length;
+
+    unlockBadge("badge1", moods.length >= 1);
+
+    unlockBadge("badge2", moods.length >= 3);
+
+    unlockBadge("badge3", challengeCount >= 3);
+
+    unlockBadge("badge4", challengeCount >= 5);
+
+    unlockBadge("badge5", points >= 50);
+
+    unlockBadge("badge6", points >= 150);
+
+}
+
+function unlockBadge(id, unlocked) {
+
+    const badge =
+        document.getElementById(id);
+
+    if(unlocked) {
+
+        badge.classList.remove("locked");
+
+    } else {
+
+        badge.classList.add("locked");
+
+    }
+
+}
+
+
+/* =========================
+   TOAST
+========================= */
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.innerText = message;
+
+    toast.style.display = "block";
+
+    clearTimeout(window.toastTimer);
+
+    window.toastTimer = setTimeout(() => {
+
+        toast.style.display = "none";
+
+    },3500);
+
+}
+
+
+/* =========================
+   CYTATY
+========================= */
+
+const quotes = [
+
+"Nie musisz być silna cały czas. Możesz po prostu być.",
+
+"Twoje potrzeby też są ważne.",
+
+"Małe kroki prowadzą do wielkich zmian.",
+
+"Zasługujesz na odpoczynek bez poczucia winy.",
+
+"Nie porównuj swojego początku z czyimś środkiem.",
+
+"Dzisiaj wybierz siebie.",
+
+"Jesteś ważna. Tak po prostu.",
+
+"Nie wszystko musi być zrobione dzisiaj.",
+
+"Pozwól sobie zwolnić.",
+
+"Dbając o siebie, nie jesteś egoistką."
+
+];
+
+function dailyQuote() {
+
+    const day =
+        Math.floor(
+            new Date().getTime() /
+            (1000*60*60*24)
+        );
+
+    document.getElementById("dailyQuote")
+        .innerText =
+        quotes[day % quotes.length];
+
+}
+
+dailyQuote();
+
+
+/* =========================
+   START
+========================= */
+
+renderHistory();
+
+renderChallenges();
+
+updateProfile();
+
+</script>
+
+</body>
+</html>
