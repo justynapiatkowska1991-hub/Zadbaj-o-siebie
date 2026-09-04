@@ -36,7 +36,7 @@ header{padding:20px 20px 8px}
 .section-title{display:flex;justify-content:space-between;align-items:center;margin:24px 3px 10px}
 .section-title h3{margin:0;font-size:22px}
 .muted{color:var(--muted)}
-.moods{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.moods{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
 .mood{background:#fffaf8;border-radius:18px;padding:12px 4px;text-align:center;border:2px solid transparent}
 .mood.selected{border-color:var(--pink);background:#fff0f4}
 .mood .emoji{font-size:30px}.mood span{display:block;color:#888;font-size:12px;margin-top:6px}
@@ -154,6 +154,13 @@ header{padding:20px 20px 8px}
   </div>
 </section>
 
+
+<section id="journal" class="screen">
+  <div class="page-head"><h2>📔 Dziennik</h2><p>Zapisz to, co chcesz zachować dla siebie.</p></div>
+  <div class="card form"><textarea id="journalInput" maxlength="1000" placeholder="Jak się dziś masz? Co jest teraz dla Ciebie ważne?" style="width:100%;min-height:150px;padding:15px;border:1px solid #eadde1;border-radius:15px;resize:vertical"></textarea><button class="primary" style="margin-top:10px" onclick="saveJournal()">💗 Zapisz wpis</button></div>
+  <div class="card"><h3>Ostatnie wpisy</h3><div id="journalHistory"></div></div>
+</section>
+
 <section id="profile" class="screen">
   <div class="page-head"><h2>👤 Profil</h2><p>Twoja prywatna przestrzeń.</p></div>
   <div class="card form">
@@ -182,6 +189,7 @@ header{padding:20px 20px 8px}
 <button data-screen="emotions" onclick="showScreen('emotions')"><i>💕</i>Emocje</button>
 <button data-screen="relax" onclick="showScreen('relax')"><i>🧘</i>Relaks</button>
 <button data-screen="challenges" onclick="showScreen('challenges')"><i>🌱</i>Wyzwania</button>
+<button data-screen="journal" onclick="showScreen('journal')"><i>📔</i>Dziennik</button>
 <button data-screen="profile" onclick="showScreen('profile')"><i>👤</i>Profil</button>
 </nav>
 </div>
@@ -231,7 +239,7 @@ function today(){return new Date().toISOString().slice(0,10)}
 function load(){
  try{
   const s=JSON.parse(localStorage.getItem(KEY)||"{}");
-  return Object.assign({name:"",points:0,streak:0,lastDay:"",tasks:{},moodHistory:[],customTasks:[]},s);
+  return Object.assign({name:"",points:0,streak:0,lastDay:"",tasks:{},moodHistory:[],customTasks:[],journal:[]},s);
  }catch(e){return {name:"",points:0,streak:0,lastDay:"",tasks:{},moodHistory:[],customTasks:[]}}
 }
 function save(){localStorage.setItem(KEY,JSON.stringify(state))}
@@ -371,6 +379,21 @@ function saveName(){
  state.name=document.getElementById("nameInput").value.trim().slice(0,30);
  save();renderAll();toast(state.name?`Miło Cię widzieć, ${state.name}! 🌷`:"Imię zapisane");
 }
+function saveJournal(){
+ const el=document.getElementById("journalInput");
+ const text=el.value.trim();
+ if(!text){toast("Napisz kilka słów 💗");return;}
+ state.journal=state.journal||[];
+ state.journal.push({date:today(),text:text.slice(0,1000)});
+ state.journal=state.journal.slice(-30);
+ save();el.value="";renderJournal();toast("Wpis zapisany 📔");
+}
+function renderJournal(){
+ const box=document.getElementById("journalHistory");
+ if(!box)return;
+ const h=[...(state.journal||[])].reverse().slice(0,8);
+ box.innerHTML=h.length?h.map(x=>'<div class="task"><div style="flex:1"><b>'+x.date+'</b><small style="display:block;margin-top:6px;white-space:pre-wrap">'+escapeHtml(x.text)+'</small></div></div>').join(""):'<div class="empty">Twój dziennik jest jeszcze pusty.</div>';
+}
 function renderProfile(){
  document.getElementById("nameInput").value=state.name||"";
  document.getElementById("profilePoints").textContent=state.points;
@@ -392,7 +415,7 @@ function renderStats(){
  document.getElementById("level").textContent=Math.floor(state.points/100)+1;
 }
 function renderAll(){
- ensureDay();renderMoods();renderTasks();renderStats();renderChart();renderHistory();renderChallenges();renderProfile();
+ ensureDay();renderMoods();renderTasks();renderStats();renderChart();renderHistory();renderChallenges();renderJournal();renderProfile();
 }
 renderAll();
 </script>
