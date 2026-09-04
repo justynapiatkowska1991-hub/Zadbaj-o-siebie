@@ -383,6 +383,19 @@ function toggleChallenge(id){
  else{state.tasks[key]=true;state.points+=x.p;toast("Wyzwanie ukończone 🏆 +"+x.p+" pkt")}
  save();renderAll();
 }
+function getLevel(){
+ const p=state.points||0;
+ if(p>=500)return ["🌟","Mistrzyni troski",500];
+ if(p>=250)return ["🏆","Opiekunka siebie",250];
+ if(p>=100)return ["🌷","Kwiat troski",100];
+ if(p>=50)return ["💗","Dbam o siebie",50];
+ return ["🌱","Pierwszy krok",10];
+}
+function renderLevel(){
+ const el=document.getElementById("levelCard"); if(!el)return;
+ const l=getLevel(); const p=state.points||0; const next=l[2]===500?500:[10,50,100,250,500].find(x=>x>p)||500;
+ el.innerHTML='<div class="eyebrow">🏅 Twój poziom</div><h3>'+l[0]+' '+l[1]+'</h3><p>'+p+' punktów</p><div class="progress"><div class="progress-bar" style="width:'+Math.min(100,p/next*100)+'%"></div></div><small>Cel: '+next+' pkt</small>';
+}
 function renderBadges(){
  const p=state.points||0, s=state.streak||0, j=(state.journal||[]).length;
  const items=[["🌱","Pierwszy krok",p>=10],["💗","Dbam o siebie",p>=50],["🌷","Kwiat troski",p>=100],["🔥","Wytrwała",s>=7],["🏆","Mistrzyni",p>=250],["📔","Piszę o sobie",j>=5]];
@@ -434,7 +447,7 @@ function renderStats(){
  document.getElementById("level").textContent=Math.floor(state.points/100)+1;
 }
 function renderAll(){
- ensureDay();renderMoods();renderTasks();renderStats();renderDailyQuote();renderChart();restorePlan();renderSummary();renderBadges();renderHistory();renderChallenges();renderJournal();renderProfile();
+ ensureDay();renderMoods();renderTasks();renderStats();renderDailyQuote();renderChart();restorePlan();renderSummary();renderBadges();renderLevel();renderHistory();renderChallenges();renderJournal();renderProfile();
 }
 renderAll();
 </script>
