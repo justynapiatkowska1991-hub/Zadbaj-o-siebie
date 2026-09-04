@@ -3,1636 +3,390 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<title>Moja Chwila</title>
-
-
+<meta name="theme-color" content="#a35e77">
+<meta name="description" content="Moja Chwila – aplikacja do codziennego dbania o siebie.">
+<title>Moja Chwila 🌷</title>
 <style>
-    .today-card {
-    background: linear-gradient(135deg, #fff, #fdf3f5);
-}
-
-.today-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.today-title small {
-    color: #a35e77;
-    font-weight: bold;
-    font-size: 12px;
-}
-
-.today-title h2 {
-    margin: 7px 0 0;
-}
-
-.today-score {
-    width: 58px;
-    height: 58px;
-    border-radius: 50%;
-    background: #f4dfe6;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.today-score strong {
-    color: #9c5d74;
-    font-size: 14px;
-}
-
-.today-progress {
-    height: 10px;
-    background: #eee;
-    border-radius: 20px;
-    overflow: hidden;
-    margin: 20px 0;
-}
-
-#todayProgressBar {
-    height: 100%;
-    width: 0%;
-    background: #a35e77;
-    border-radius: 20px;
-    transition: width .4s ease;
-}
-
-.today-task {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px;
-    margin-top: 10px;
-    border-radius: 18px;
-    background: #fff;
-    border: 1px solid #f1e6e9;
-}
-
-.today-task.done {
-    opacity: .6;
-}
-
-.task-check {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    border: 2px solid #d9a9b9;
-    background: white;
-    color: #a35e77;
-    font-size: 18px;
-    flex-shrink: 0;
-}
-
-.today-task.done .task-check {
-    background: #a35e77;
-    color: white;
-}
-
-.task-text {
-    font-size: 15px;
-    line-height: 1.3;
-}
-
-.task-points {
-    margin-left: auto;
-    color: #a35e77;
-    font-size: 12px;
-    font-weight: bold;
-}
-* {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-}
-
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #faf7f5;
-    color: #29272a;
-}
-
-button {
-    font-family: inherit;
-    cursor: pointer;
-}
-
-.app {
-    max-width: 700px;
-    margin: auto;
-    min-height: 100vh;
-    padding-bottom: 90px;
-}
-
-header {
-    padding: 18px 22px 10px;
-}
-
-.premium-header {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.app-logo {
-    width: 72px;
-    height: 72px;
-    object-fit: contain;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
-.premium-header h1 {
-    margin: 0;
-    font-size: 28px;
-}
-
-.premium-header p {
-    margin: 6px 0 0;
-    color: #888;
-    font-size: 15px;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 34px;
-}
-
-header p {
-    margin-top: 8px;
-    color: #888;
-    font-size: 18px;
-}
-
-.screen {
-    display: none;
-    padding: 0 18px;
-}
-
-.screen.active {
-    display: block;
-}
-
-.hero {
-    background: linear-gradient(135deg, #f9e4e9, #f8ece9);
-    border-radius: 30px;
-    padding: 32px 28px;
-    margin: 15px 0;
-    box-shadow: 0 8px 30px rgba(100,70,80,.07);
-}
-
-.hero small {
-    color: #9c5d74;
-    font-weight: bold;
-    font-size: 15px;
-}
-
-.hero h2 {
-    font-size: 30px;
-    line-height: 1.25;
-    margin: 25px 0 18px;
-}
-
-.hero p {
-    color: #777;
-    font-size: 18px;
-    line-height: 1.5;
-}
-
-.primary {
-    width: 100%;
-    border: none;
-    border-radius: 20px;
-    padding: 17px;
-    background: #a35e77;
-    color: white;
-    font-size: 17px;
-    font-weight: bold;
-    margin-top: 15px;
-}
-
-.primary:active {
-    transform: scale(.98);
-}
-
-.card {
-    background: white;
-    border-radius: 28px;
-    padding: 25px;
-    margin: 18px 0;
-    box-shadow: 0 5px 25px rgba(0,0,0,.04);
-}
-
-.card h2 {
-    margin-top: 0;
-}
-
-.moods {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-}
-
-.mood {
-    border: none;
-    background: #fbf8f6;
-    border-radius: 18px;
-    padding: 14px 5px;
-    font-size: 27px;
-}
-
-.mood span {
-    display: block;
-    font-size: 12px;
-    color: #888;
-    margin-top: 7px;
-}
-
-.mood.selected {
-    background: #f3dce3;
-    box-shadow: inset 0 0 0 2px #a35e77;
-}
-
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    max-width: 700px;
-    margin: auto;
-    height: 78px;
-    background: rgba(255,255,255,.97);
-    border-top: 1px solid #eee;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    z-index: 20;
-}
-
-.nav-btn {
-    border: none;
-    background: transparent;
-    color: #aaa;
-    font-size: 12px;
-}
-
-.nav-btn .icon {
-    display: block;
-    font-size: 27px;
-    margin-bottom: 3px;
-}
-
-.nav-btn.active {
-    color: #a35e77;
-    font-weight: bold;
-}
-
-/* EMOCJE */
-
-.mood-history {
-    margin-top: 15px;
-}
-
-.history-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 0;
-    border-bottom: 1px solid #eee;
-}
-
-.history-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.history-emoji {
-    font-size: 30px;
-}
-
-.empty {
-    text-align: center;
-    color: #999;
-    padding: 30px 10px;
-}
-
-/* RELAKS */
-
-.relax-options {
-    display: grid;
-    gap: 14px;
-}
-
-.relax-btn {
-    border: none;
-    background: #f8eeee;
-    border-radius: 20px;
-    padding: 20px;
-    text-align: left;
-    font-size: 16px;
-}
-
-.relax-btn strong {
-    display: block;
-    font-size: 18px;
-    margin-bottom: 6px;
-}
-
-.relax-btn span {
-    color: #888;
-}
-
-.breathing {
-    text-align: center;
-    padding: 15px 0;
-}
-
-.breath-circle {
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    background: #efd5df;
-    margin: 25px auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    color: #7e4c60;
-    transition: transform 4s ease-in-out;
-}
-
-.breath-circle.grow {
-    transform: scale(1.35);
-}
-
-.timer {
-    font-size: 42px;
-    font-weight: bold;
-    color: #9c5d74;
-}
-
-/* WYZWANIA */
-
-.challenge {
-    border: 1px solid #eee;
-    border-radius: 22px;
-    padding: 20px;
-    margin-bottom: 15px;
-    background: #fff;
-}
-
-.challenge-top {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-}
-
-.challenge h3 {
-    margin: 0 0 8px;
-}
-
-.challenge p {
-    color: #888;
-    margin-bottom: 15px;
-}
-
-.progress {
-    height: 9px;
-    background: #eee;
-    border-radius: 20px;
-    overflow: hidden;
-}
-
-.progress-bar {
-    height: 100%;
-    background: #a35e77;
-    width: 0%;
-    transition: width .3s;
-}
-
-.check-btn {
-    border: none;
-    background: #f4e0e6;
-    color: #9c5d74;
-    border-radius: 14px;
-    padding: 10px 14px;
-    font-weight: bold;
-}
-
-/* PROFIL */
-
-.profile-head {
-    text-align: center;
-    padding: 15px 0;
-}
-
-.avatar {
-    width: 95px;
-    height: 95px;
-    border-radius: 50%;
-    background: #f2dce4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 48px;
-    margin: auto;
-}
-
-.profile-name {
-    font-size: 25px;
-    margin: 12px 0 5px;
-}
-
-.stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-}
-
-.stat {
-    background: #fbf8f6;
-    border-radius: 18px;
-    padding: 18px 5px;
-    text-align: center;
-}
-
-.stat strong {
-    display: block;
-    font-size: 24px;
-    color: #9c5d74;
-}
-
-.stat span {
-    font-size: 12px;
-    color: #888;
-}
-
-.badges {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-}
-
-.badge {
-    text-align: center;
-    background: #fbf8f6;
-    padding: 15px 5px;
-    border-radius: 18px;
-}
-
-.badge .badge-icon {
-    font-size: 32px;
-}
-
-.badge.locked {
-    opacity: .35;
-}
-
-input {
-    width: 100%;
-    padding: 16px;
-    border: 1px solid #eee;
-    border-radius: 15px;
-    font-size: 16px;
-    margin-bottom: 10px;
-}
-
-.section-title {
-    margin-top: 28px;
-    margin-bottom: 12px;
-}
-
-.toast {
-    position: fixed;
-    left: 50%;
-    bottom: 95px;
-    transform: translateX(-50%);
-    background: #333;
-    color: white;
-    padding: 13px 20px;
-    border-radius: 20px;
-    display: none;
-    z-index: 100;
-    font-size: 14px;
-}
-
-@media(max-width:400px) {
-    .hero h2 {
-        font-size: 26px;
-    }
-
-    .moods {
-        gap: 4px;
-    }
-
-    .mood {
-        font-size: 23px;
-    }
-}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --pink:#a35e77;--pink2:#c47d96;--soft:#fdf1f5;--soft2:#fff8fa;
+  --green:#72a77b;--text:#29272a;--muted:#858084;--white:#fff;
+  --shadow:0 10px 30px rgba(80,40,55,.09);--radius:24px
+}
+html,body{margin:0;padding:0;background:#f7f3f4;color:var(--text);font-family:Arial,sans-serif}
+body{min-height:100vh}
+button,input{font:inherit}
+button{cursor:pointer;border:0}
+.app{max-width:760px;margin:auto;min-height:100vh;background:#fff8f7;padding-bottom:92px}
+header{padding:20px 20px 8px}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:76px;height:76px;border-radius:50%;object-fit:cover;background:#f6e2e9;box-shadow:0 4px 15px rgba(0,0,0,.08)}
+.brand h1{font-size:38px;line-height:1.05;margin:0;font-weight:700}
+.brand p{margin:7px 0 0;color:var(--muted);font-size:18px}
+.screen{display:none;padding:12px 18px 20px}
+.screen.active{display:block}
+.card{background:#fff;border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin:14px 0}
+.hero{background:linear-gradient(135deg,#fff,#fbe8ee);padding:28px}
+.eyebrow{font-size:15px;text-transform:uppercase;letter-spacing:.4px;color:var(--pink);font-weight:700}
+.hero h2{font-size:34px;line-height:1.16;margin:18px 0 12px}
+.hero p{font-size:18px;line-height:1.5;color:#777;margin:0 0 22px}
+.primary{width:100%;padding:17px 20px;border-radius:18px;background:var(--pink);color:#fff;font-weight:700;font-size:18px}
+.primary:active{transform:scale(.98)}
+.secondary{padding:13px 16px;border-radius:15px;background:#f7e8ed;color:var(--pink);font-weight:700}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:24px 3px 10px}
+.section-title h3{margin:0;font-size:22px}
+.muted{color:var(--muted)}
+.moods{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.mood{background:#fffaf8;border-radius:18px;padding:12px 4px;text-align:center;border:2px solid transparent}
+.mood.selected{border-color:var(--pink);background:#fff0f4}
+.mood .emoji{font-size:30px}.mood span{display:block;color:#888;font-size:12px;margin-top:6px}
+.progress{height:11px;background:#eee;border-radius:20px;overflow:hidden}
+.progress>div{height:100%;background:var(--pink);border-radius:20px;width:0;transition:.4s}
+.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:#fff7f9;border-radius:18px;padding:15px;text-align:center}
+.stat b{display:block;font-size:26px;color:var(--pink)}
+.stat span{font-size:12px;color:#888}
+.task{display:flex;gap:13px;align-items:center;background:#fff;border:1px solid #f0e3e7;border-radius:18px;padding:14px;margin:9px 0}
+.check{width:42px;height:42px;flex:none;border-radius:50%;border:2px solid #d8a2b4;background:#fff;color:var(--pink);font-size:19px}
+.task.done{opacity:.58}.task.done .check{background:var(--pink);color:#fff}
+.task b{display:block;font-size:15px}.task small{color:#888;line-height:1.35}
+.nav{position:fixed;z-index:20;bottom:0;left:50%;transform:translateX(-50%);width:min(760px,100%);height:82px;background:rgba(255,255,255,.97);border-top:1px solid #eee;display:grid;grid-template-columns:repeat(5,1fr);padding:7px 5px env(safe-area-inset-bottom)}
+.nav button{background:none;color:#999;font-size:12px}.nav button.active{color:var(--pink);font-weight:700}
+.nav i{display:block;font-style:normal;font-size:27px;margin-bottom:3px}
+.page-head h2{margin:6px 0;font-size:30px}.page-head p{margin:0;color:#888}
+.choice{background:linear-gradient(135deg,#fff0f4,#fff);border:1px solid #f2dce4}
+.choice h3{font-size:24px;margin:8px 0}.choice p{color:#6f6a6d;line-height:1.5;font-size:17px}
+.reward{font-weight:700;color:var(--pink)}
+.chart{display:flex;align-items:flex-end;gap:8px;height:150px;padding-top:15px}
+.barwrap{height:100%;flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px}
+.bar{width:100%;max-width:38px;border-radius:10px 10px 4px 4px;background:#d49aae;min-height:6px}
+.barlabel{font-size:11px;color:#999}
+.badges{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.badge{border-radius:18px;padding:16px;background:#fff8e9;border:1px solid #f2e3bd}
+.badge.locked{filter:grayscale(1);opacity:.45}.badge .big{font-size:30px}.badge b{display:block;margin-top:5px}.badge small{color:#888}
+.form input{width:100%;padding:15px;border:1px solid #eadde1;border-radius:15px;margin:7px 0;background:#fff}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.notice{padding:13px 15px;border-radius:15px;background:#f5f0f2;color:#6f676b;font-size:13px;line-height:1.45}
+.modal{position:fixed;inset:0;background:rgba(30,20,25,.45);z-index:50;display:none;align-items:flex-end;justify-content:center}
+.modal.show{display:flex}.sheet{background:#fff;width:min(760px,100%);border-radius:28px 28px 0 0;padding:24px 20px 30px;max-height:85vh;overflow:auto}.sheet h2{margin-top:0}
+.toast{position:fixed;z-index:60;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);background:#29272a;color:#fff;padding:12px 18px;border-radius:30px;opacity:0;pointer-events:none;transition:.25s;font-size:14px}.toast.show{opacity:1;transform:translateX(-50%)}
+.smallbtn{background:none;color:var(--pink);font-weight:700;padding:5px}
+.empty{text-align:center;color:#999;padding:20px}
+@media(max-width:420px){.brand h1{font-size:32px}.hero h2{font-size:29px}.mood .emoji{font-size:26px}.moods{gap:4px}.card{padding:18px}}
 </style>
 </head>
-
 <body>
-
 <div class="app">
-
-<header class="premium-header">
-
-    <img src="file_0000000053cc820a9389b769a5784721.png" class="app-logo" alt="Moja Chwila">
-
-    <div>
-        <h1 id="greeting">Dzień dobry 🌷</h1>
-        <p>Znajdź dziś chwilę tylko dla siebie.</p>
-    </div>
-
+<header>
+  <div class="brand">
+    <img id="logo" class="logo" src="file_0000000053cc820a9389b769a5784721.png" alt="Moja Chwila" onerror="this.style.display='none'">
+    <div><h1>Dzień dobry 🌷</h1><p id="greeting">Znajdź dziś chwilę tylko dla siebie.</p></div>
+  </div>
 </header>
 
-<!-- START -->
-
+<main>
 <section id="start" class="screen active">
-
-<div class="hero">
-    <small>TWOJA CHWILA NA DZIŚ</small>
-
+  <div class="card hero">
+    <div class="eyebrow">Twoja chwila na dziś</div>
     <h2>Nie musisz zrobić wszystkiego. Wystarczy, że zadbasz dziś o siebie.</h2>
+    <p>Mały krok też jest krokiem. Wybierz jedną rzecz, którą możesz zrobić dla siebie.</p>
+    <button class="primary" onclick="chooseMoment()">✨ Wybierz coś dla mnie</button>
+  </div>
 
-    <p>
-        Mały krok też jest krokiem. Wybierz jedną rzecz,
-        którą możesz zrobić dla siebie.
-    </p>
+  <div class="card">
+    <div class="section-title"><h3>Jak się dziś czujesz?</h3><span class="muted" id="moodLabel">Nie wybrano</span></div>
+    <div class="moods" id="moods"></div>
+  </div>
 
-    <button class="primary" onclick="chooseForMe()">
-        ✨ Wybierz coś dla mnie
-    </button>
-</div>
-
-<div class="card">
-    <h2>Jak się dziś czujesz?</h2>
-
-    <div class="moods">
-
-        <button class="mood" onclick="selectMood('Świetnie','🤩',5,this)">
-            🤩
-            <span>Świetnie</span>
-        </button>
-
-        <button class="mood" onclick="selectMood('Dobrze','😊',4,this)">
-            😊
-            <span>Dobrze</span>
-        </button>
-
-        <button class="mood" onclick="selectMood('Średnio','😐',3,this)">
-            😐
-            <span>Średnio</span>
-        </button>
-
-        <button class="mood" onclick="selectMood('Smutno','😔',2,this)">
-            😔
-            <span>Smutno</span>
-        </button>
-
-        <button class="mood" onclick="selectMood('Trudno','😣',1,this)">
-            😣
-            <span>Trudno</span>
-        </button>
-
+  <div class="card">
+    <div class="section-title"><h3>Twój dzień</h3><span id="dayPercent" class="reward">0%</span></div>
+    <div class="progress"><div id="dayProgress"></div></div>
+    <div class="statgrid" style="margin-top:15px">
+      <div class="stat"><b id="points">0</b><span>punktów</span></div>
+      <div class="stat"><b id="streak">0</b><span>dni z rzędu 🔥</span></div>
+      <div class="stat"><b id="level">1</b><span>poziom</span></div>
     </div>
-</div>
+  </div>
 
-<div class="card">
-    <h2>🌷 Myśl na dziś</h2>
-    <p id="dailyQuote">
-        Nie musisz być silna cały czas. Możesz po prostu być.
-    </p>
-</div>
-<div class="card today-card">
-
-    <div class="today-title">
-        <div>
-            <small>TWOJA CODZIENNA CHWILA</small>
-            <h2>🌷 Twój dzień</h2>
-        </div>
-
-        <div class="today-score">
-            <strong id="todayProgress">0%</strong>
-        </div>
-    </div>
-
-    <p>
-        Nie musisz zrobić wszystkiego. Wybierz małe kroki dla siebie.
-    </p>
-
-    <div class="today-progress">
-        <div id="todayProgressBar"></div>
-    </div>
-
-    <div id="todayTasks"></div>
-
-</div>
+  <div class="section-title"><h3>Dzisiejsze zadania</h3><button class="smallbtn" onclick="addCustomTask()">+ własne</button></div>
+  <div id="tasks"></div>
 </section>
-
-
-<!-- EMOCJE -->
 
 <section id="emotions" class="screen">
-
-<div class="card">
-    <h2>💕 Twoje emocje</h2>
-
-    <p>
-        Zapisuj swoje samopoczucie. Z czasem zobaczysz,
-        jak zmienia się Twój nastrój.
-    </p>
-
-    <div class="stats">
-        <div class="stat">
-            <strong id="moodAverage">–</strong>
-            <span>średnia</span>
-        </div>
-
-        <div class="stat">
-            <strong id="moodCount">0</strong>
-            <span>wpisów</span>
-        </div>
-
-        <div class="stat">
-            <strong id="goodDays">0</strong>
-            <span>dobrych dni</span>
-        </div>
-    </div>
-</div>
-
-<div class="card">
-    <h2>📖 Historia</h2>
-
-    <div id="history" class="mood-history">
-        <div class="empty">
-            Nie masz jeszcze zapisanych emocji.
-        </div>
-    </div>
-</div>
-
+  <div class="page-head"><h2>💕 Emocje</h2><p>Zauważ, co dzieje się w Tobie.</p></div>
+  <div class="card">
+    <div class="section-title"><h3>Twój nastrój z ostatnich dni</h3></div>
+    <div id="chart" class="chart"></div>
+  </div>
+  <div class="card">
+    <div class="section-title"><h3>Historia</h3><button class="smallbtn" onclick="clearMoodHistory()">Wyczyść</button></div>
+    <div id="history"></div>
+  </div>
 </section>
-
-
-<!-- RELAKS -->
 
 <section id="relax" class="screen">
-
-<div class="card">
-
-    <h2>🧘 Chwila relaksu</h2>
-
-    <p>
-        Zatrzymaj się na chwilę. Wybierz ćwiczenie,
-        którego potrzebujesz teraz.
-    </p>
-
-    <div class="relax-options">
-
-        <button class="relax-btn" onclick="startBreathing()">
-            <strong>🌬️ Spokojny oddech</strong>
-            <span>2 minuty wyciszenia</span>
-        </button>
-
-        <button class="relax-btn" onclick="relaxMessage('Zamknij oczy. Weź spokojny wdech przez nos i powoli wypuść powietrze. Powtórz kilka razy.')">
-            <strong>🌿 Chwila uważności</strong>
-            <span>Skup się na tym, co dzieje się teraz.</span>
-        </button>
-
-        <button class="relax-btn" onclick="relaxMessage('Połóż się wygodnie. Rozluźnij ramiona, szczękę i dłonie. Pozwól sobie przez chwilę niczego nie robić.')">
-            <strong>💗 Odpoczynek</strong>
-            <span>Nic nie musisz. Po prostu odpocznij.</span>
-        </button>
-
-    </div>
-
-</div>
-
-<div id="breathingBox" class="card breathing" style="display:none">
-
-    <h2>🌬️ Oddychamy razem</h2>
-
-    <div class="breath-circle" id="breathCircle">
-        Oddychaj
-    </div>
-
-    <div class="timer" id="breathTimer">120</div>
-
-    <p id="breathInstruction">
-        Przygotuj się...
-    </p>
-
-    <button class="primary" onclick="stopBreathing()">
-        Zakończ ćwiczenie
-    </button>
-
-</div>
-
+  <div class="page-head"><h2>🧘 Relaks</h2><p>Krótka chwila, tylko dla Ciebie.</p></div>
+  <div class="card choice">
+    <div class="eyebrow">Ćwiczenie oddechowe</div>
+    <h3 id="breathTitle">Spokojny oddech</h3>
+    <p id="breathText">Weź spokojny wdech przez nos, a potem powoli wypuść powietrze.</p>
+    <div style="text-align:center;font-size:58px;margin:20px 0" id="breathCircle">🌿</div>
+    <button class="primary" onclick="startBreathing()">▶ Rozpocznij 1 minutę</button>
+  </div>
+  <div class="card">
+    <h3>Małe pomysły na relaks</h3>
+    <div class="task"><span style="font-size:28px">☕</span><div><b>Herbata bez telefonu</b><small>10 minut spokojnej przerwy.</small></div></div>
+    <div class="task"><span style="font-size:28px">🎵</span><div><b>Jedna ulubiona piosenka</b><small>Posłuchaj jej bez robienia niczego więcej.</small></div></div>
+    <div class="task"><span style="font-size:28px">🌳</span><div><b>Krótki spacer</b><small>Wyjdź na świeże powietrze choćby na 10 minut.</small></div></div>
+  </div>
 </section>
-
-
-<!-- WYZWANIA -->
 
 <section id="challenges" class="screen">
-
-<div class="card">
-    <h2>🌱 Wyzwania</h2>
-
-    <p>
-        Małe codzienne działania mogą stworzyć wielką zmianę.
-    </p>
-</div>
-
-<div id="challengeList"></div>
-
+  <div class="page-head"><h2>🌱 Wyzwania</h2><p>Małe kroki budują dobre nawyki.</p></div>
+  <div class="card">
+    <div class="section-title"><h3>Poziom <span id="challengeLevel">1</span></h3><span class="reward" id="xpText">0 / 100 XP</span></div>
+    <div class="progress"><div id="xpBar"></div></div>
+  </div>
+  <div id="challengeList"></div>
+  <div class="card">
+    <h3>🏆 Twoje odznaki</h3>
+    <div id="badges" class="badges"></div>
+  </div>
 </section>
-
-
-<!-- PROFIL -->
 
 <section id="profile" class="screen">
-
-<div class="card profile-head">
-
-    <div class="avatar">🌷</div>
-
-    <div class="profile-name" id="profileName">
-        Moja Chwila
+  <div class="page-head"><h2>👤 Profil</h2><p>Twoja prywatna przestrzeń.</p></div>
+  <div class="card form">
+    <h3>Jak mamy się do Ciebie zwracać?</h3>
+    <input id="nameInput" placeholder="Twoje imię" maxlength="30">
+    <button class="primary" onclick="saveName()">Zapisz imię</button>
+  </div>
+  <div class="card">
+    <h3>📊 Twój postęp</h3>
+    <div class="statgrid">
+      <div class="stat"><b id="profilePoints">0</b><span>punktów</span></div>
+      <div class="stat"><b id="profileStreak">0</b><span>streak 🔥</span></div>
+      <div class="stat"><b id="profileTasks">0</b><span>ukończonych zadań</span></div>
     </div>
-
-    <p>Zadbaj o siebie. Krok po kroku.</p>
-
-</div>
-
-<div class="card">
-
-    <h2>🏆 Twój postęp</h2>
-
-    <div class="stats">
-
-        <div class="stat">
-            <strong id="points">0</strong>
-            <span>punktów</span>
-        </div>
-
-        <div class="stat">
-            <strong id="completedChallenges">0</strong>
-            <span>zadań</span>
-        </div>
-
-        <div class="stat">
-            <strong id="daysActive">0</strong>
-            <span>dni</span>
-        </div>
-
-    </div>
-
-</div>
-
-<div class="card">
-
-    <h2>👤 Twoje imię</h2>
-
-    <input id="nameInput" placeholder="Wpisz swoje imię">
-
-    <button class="primary" onclick="saveName()">
-        Zapisz
-    </button>
-
-</div>
-
-<div class="card">
-
-    <h2>🏅 Odznaki</h2>
-
-    <div class="badges">
-
-        <div class="badge locked" id="badge1">
-            <div class="badge-icon">🌱</div>
-            <small>Pierwszy krok</small>
-        </div>
-
-        <div class="badge locked" id="badge2">
-            <div class="badge-icon">💕</div>
-            <small>Dbam o siebie</small>
-        </div>
-
-        <div class="badge locked" id="badge3">
-            <div class="badge-icon">🔥</div>
-            <small>Zaangażowana</small>
-        </div>
-
-        <div class="badge locked" id="badge4">
-            <div class="badge-icon">🌟</div>
-            <small>Wytrwałość</small>
-        </div>
-
-        <div class="badge locked" id="badge5">
-            <div class="badge-icon">🧘</div>
-            <small>Spokój</small>
-        </div>
-
-        <div class="badge locked" id="badge6">
-            <div class="badge-icon">👑</div>
-            <small>Mistrzyni</small>
-        </div>
-
-    </div>
-
-</div>
-
+  </div>
+  <div class="card">
+    <h3>⚙️ Ustawienia</h3>
+    <button class="task" style="width:100%;border:0;text-align:left" onclick="resetApp()">🔄 <div><b>Zresetuj dane aplikacji</b><small>Usuwa lokalny postęp i historię.</small></div></button>
+    <div class="notice">Twoje dane są przechowywane lokalnie w pamięci przeglądarki tego urządzenia. Aplikacja nie wysyła ich automatycznie na serwer.</div>
+  </div>
 </section>
+</main>
 
-
-<!-- MENU -->
-
-<nav class="bottom-nav">
-
-<button class="nav-btn active" onclick="showScreen('start',this)">
-    <span class="icon">🏠</span>
-    Start
-</button>
-
-<button class="nav-btn" onclick="showScreen('emotions',this)">
-    <span class="icon">💕</span>
-    Emocje
-</button>
-
-<button class="nav-btn" onclick="showScreen('relax',this)">
-    <span class="icon">🧘</span>
-    Relaks
-</button>
-
-<button class="nav-btn" onclick="showScreen('challenges',this)">
-    <span class="icon">🌱</span>
-    Wyzwania
-</button>
-
-<button class="nav-btn" onclick="showScreen('profile',this)">
-    <span class="icon">👤</span>
-    Profil
-</button>
-
+<nav class="nav">
+<button data-screen="start" class="active" onclick="showScreen('start')"><i>🏠</i>Start</button>
+<button data-screen="emotions" onclick="showScreen('emotions')"><i>💕</i>Emocje</button>
+<button data-screen="relax" onclick="showScreen('relax')"><i>🧘</i>Relaks</button>
+<button data-screen="challenges" onclick="showScreen('challenges')"><i>🌱</i>Wyzwania</button>
+<button data-screen="profile" onclick="showScreen('profile')"><i>👤</i>Profil</button>
 </nav>
-
 </div>
 
+<div id="modal" class="modal" onclick="if(event.target===this)closeModal()">
+  <div class="sheet">
+    <button class="smallbtn" style="float:right" onclick="closeModal()">✕</button>
+    <div class="eyebrow">Twoja chwila</div>
+    <h2 id="modalTitle"></h2>
+    <p id="modalText" style="font-size:17px;line-height:1.55;color:#6f696c"></p>
+    <button class="primary" onclick="completeMoment()">💗 Zrobię to</button>
+  </div>
+</div>
 <div id="toast" class="toast"></div>
 
-
 <script>
-
-/* =========================
-   DANE
-========================= */
-
-let moods = JSON.parse(localStorage.getItem("mojeMoods")) || [];
-
-let points = Number(localStorage.getItem("mojePoints")) || 0;
-
-let completed = JSON.parse(localStorage.getItem("mojeChallenges")) || {};
-
-let userName = localStorage.getItem("mojeName") || "";
-
-let activeDays = JSON.parse(localStorage.getItem("activeDays")) || [];
-
-let breathingInterval = null;
-
-
-/* =========================
-   POWITANIE
-========================= */
-
-function setGreeting() {
-
-    const hour = new Date().getHours();
-
-    let greeting = "Dzień dobry 🌷";
-
-    if(hour >= 12 && hour < 18) {
-        greeting = "Dzień dobry 🌷";
-    }
-
-    if(hour >= 18) {
-        greeting = "Dobry wieczór 🌙";
-    }
-
-    document.getElementById("greeting").innerText = greeting;
-
-}
-
-setGreeting();
-
-
-/* =========================
-   NAWIGACJA
-========================= */
-
-function showScreen(id, button) {
-
-    document.querySelectorAll(".screen").forEach(screen => {
-        screen.classList.remove("active");
-    });
-
-    document.getElementById(id).classList.add("active");
-
-    document.querySelectorAll(".nav-btn").forEach(btn => {
-        btn.classList.remove("active");
-    });
-
-    if(button) {
-        button.classList.add("active");
-    }
-
-    if(id === "emotions") {
-        renderHistory();
-    }
-
-    if(id === "challenges") {
-        renderChallenges();
-    }
-
-    if(id === "profile") {
-        updateProfile();
-    }
-
-    window.scrollTo(0,0);
-}
-
-
-/* =========================
-   WYBIERZ COŚ DLA MNIE
-========================= */
-
-const suggestions = [
-
-"🌿 Wyjdź na 10 minut na spacer.",
-
-"☕ Zrób sobie ulubioną herbatę i wypij ją bez telefonu.",
-
-"💗 Napisz jedną rzecz, za którą jesteś dziś wdzięczna.",
-
-"🧘 Zrób 2 minuty spokojnego oddechu.",
-
-"📵 Odłóż telefon na 20 minut.",
-
-"🎵 Włącz muzykę, którą naprawdę lubisz.",
-
-"🌷 Zrób dziś jedną małą rzecz tylko dla siebie.",
-
-"💧 Wypij szklankę wody i zatrzymaj się na chwilę.",
-
-"📖 Przeczytaj kilka stron książki.",
-
-"😊 Powiedz sobie coś dobrego."
-
+const KEY="moja_chwila_v3";
+const moods=[
+  {e:"🤩",n:"Świetnie",v:5},{e:"😊",n:"Dobrze",v:4},{e:"😐",n:"Średnio",v:3},
+  {e:"😔",n:"Smutno",v:2},{e:"😣",n:"Trudno",v:1}
+];
+const baseTasks=[
+ {id:"water",e:"💧",t:"Napij się wody",d:"Zatrzymaj się na chwilę i wypij szklankę wody.",p:5},
+ {id:"walk",e:"🌿",t:"10 minut dla siebie",d:"Krótki spacer albo spokojne wyjście na świeże powietrze.",p:10},
+ {id:"breath",e:"🧘",t:"5 spokojnych oddechów",d:"Zwolnij i skup się przez chwilę tylko na oddechu.",p:5},
+ {id:"gratitude",e:"💗",t:"Jedna rzecz, za którą jesteś wdzięczna",d:"Zapisz lub pomyśl o jednej dobrej rzeczy z dzisiaj.",p:5}
+];
+const challenges=[
+ {id:"c1",e:"🌸",t:"Zadbaj dziś o siebie",d:"Wykonaj dowolne zadanie z listy.",p:10},
+ {id:"c2",e:"📵",t:"15 minut bez telefonu",d:"Odłóż telefon i daj głowie odpocząć.",p:15},
+ {id:"c3",e:"📝",t:"Napisz jedno dobre zdanie o sobie",d:"Co w sobie lubisz albo za co siebie cenisz?",p:15},
+ {id:"c4",e:"🌙",t:"Wieczorny spokój",d:"Przed snem poświęć 5 minut na spokojny oddech.",p:20}
+];
+const moments=[
+ ["🌿 Chwila dla ciała","Wyjdź na 10-minutowy spacer. Nie musisz się spieszyć. Po prostu pobądź chwilę na świeżym powietrzu."],
+ ["💗 Chwila wdzięczności","Pomyśl o 3 rzeczach, za które możesz być dziś wdzięczna."],
+ ["🧘 Spokojny oddech","Usiądź wygodnie. Weź 5 powolnych, głębokich oddechów i pozwól sobie na chwilę spokoju."],
+ ["☕ Zadbaj o siebie","Zrób sobie ulubiony napój i przez 10 minut nie rób niczego, czego nie musisz robić."],
+ ["📵 Chwila bez telefonu","Odłóż telefon na 15 minut. Posłuchaj muzyki, popatrz przez okno albo po prostu odpocznij."],
+ ["🌸 Powiedz coś dobrego sobie","Stań przed lustrem i powiedz sobie jedno dobre zdanie. Tak, jak powiedziałabyś je bliskiej osobie."]
 ];
 
-function chooseForMe() {
+let state=load();
+let currentMoment=null;
 
-    const random =
-        suggestions[Math.floor(Math.random() * suggestions.length)];
-
-    showToast(random);
-
+function today(){return new Date().toISOString().slice(0,10)}
+function load(){
+ try{
+  const s=JSON.parse(localStorage.getItem(KEY)||"{}");
+  return Object.assign({name:"",points:0,streak:0,lastDay:"",tasks:{},moodHistory:[],customTasks:[]},s);
+ }catch(e){return {name:"",points:0,streak:0,lastDay:"",tasks:{},moodHistory:[],customTasks:[]}}
 }
-
-
-/* =========================
-   EMOCJE
-========================= */
-
-function selectMood(name, emoji, value, button) {
-
-    document.querySelectorAll(".mood").forEach(btn => {
-        btn.classList.remove("selected");
-    });
-
-    button.classList.add("selected");
-
-    const today = new Date().toLocaleDateString("pl-PL");
-
-    moods.push({
-        date: today,
-        name: name,
-        emoji: emoji,
-        value: value
-    });
-
-    localStorage.setItem("mojeMoods", JSON.stringify(moods));
-
-    activeDays.push(today);
-
-    activeDays = [...new Set(activeDays)];
-
-    localStorage.setItem(
-        "activeDays",
-        JSON.stringify(activeDays)
-    );
-
-    points += 5;
-
-    localStorage.setItem("mojePoints", points);
-
-    showToast("💗 Zapisano Twoje samopoczucie");
-
-    setTimeout(() => {
-        updateProfile();
-    },300);
-
+function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function toast(msg){const x=document.getElementById("toast");x.textContent=msg;x.classList.add("show");setTimeout(()=>x.classList.remove("show"),2200)}
+function dayKey(id){return today()+"_"+id}
+function ensureDay(){
+ const t=today();
+ if(state.lastDay===t)return;
+ if(state.lastDay){
+  const old=new Date(state.lastDay), now=new Date(t);
+  const diff=Math.round((now-old)/86400000);
+  if(diff===1) state.streak=(state.streak||0)+1;
+  else state.streak=1;
+ }else state.streak=1;
+ state.lastDay=t; save();
 }
-
-
-/* =========================
-   HISTORIA EMOCJI
-========================= */
-
-function renderHistory() {
-
-    const box = document.getElementById("history");
-
-    if(moods.length === 0) {
-
-        box.innerHTML =
-        '<div class="empty">Nie masz jeszcze zapisanych emocji.</div>';
-
-        return;
-    }
-
-    const last = moods.slice(-15).reverse();
-
-    box.innerHTML = "";
-
-    last.forEach(item => {
-
-        const div = document.createElement("div");
-
-        div.className = "history-item";
-
-        div.innerHTML = `
-            <div class="history-left">
-                <span class="history-emoji">${item.emoji}</span>
-                <div>
-                    <strong>${item.name}</strong>
-                    <div style="color:#999;font-size:13px">
-                        ${item.date}
-                    </div>
-                </div>
-            </div>
-            <span>♥</span>
-        `;
-
-        box.appendChild(div);
-
-    });
-
-    const avg =
-        moods.reduce((sum,item) => sum + item.value,0) /
-        moods.length;
-
-    document.getElementById("moodAverage").innerText =
-        avg.toFixed(1);
-
-    document.getElementById("moodCount").innerText =
-        moods.length;
-
-    document.getElementById("goodDays").innerText =
-        moods.filter(item => item.value >= 4).length;
-
+function addPoints(n){state.points+=n;save();renderAll()}
+function showScreen(id){
+ document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.screen===id));
+ window.scrollTo({top:0,behavior:"smooth"});
+ renderAll();
 }
-
-
-/* =========================
-   RELAKS
-========================= */
-
-function startBreathing() {
-
-    document.getElementById("breathingBox").style.display = "block";
-
-    let seconds = 120;
-
-    let phase = 0;
-
-    const circle = document.getElementById("breathCircle");
-
-    const timer = document.getElementById("breathTimer");
-
-    const instruction =
-        document.getElementById("breathInstruction");
-
-    clearInterval(breathingInterval);
-
-    breathingInterval = setInterval(() => {
-
-        seconds--;
-
-        timer.innerText = seconds;
-
-        phase++;
-
-        if(phase % 8 < 4) {
-
-            circle.classList.add("grow");
-
-            instruction.innerText =
-                "🌬️ Powoli nabierz powietrza...";
-
-        } else {
-
-            circle.classList.remove("grow");
-
-            instruction.innerText =
-                "🍃 Powoli wypuść powietrze...";
-
-        }
-
-        if(seconds <= 0) {
-
-            clearInterval(breathingInterval);
-
-            instruction.innerText =
-                "💗 Świetnie. Znalazłaś chwilę dla siebie.";
-
-            points += 15;
-
-            localStorage.setItem("mojePoints", points);
-
-            showToast("🌷 Ćwiczenie ukończone +15 punktów");
-
-        }
-
-    },1000);
-
+function chooseMoment(){
+ currentMoment=moments[Math.floor(Math.random()*moments.length)];
+ document.getElementById("modalTitle").textContent=currentMoment[0];
+ document.getElementById("modalText").textContent=currentMoment[1];
+ document.getElementById("modal").classList.add("show");
 }
-
-function stopBreathing() {
-
-    clearInterval(breathingInterval);
-
-    document.getElementById("breathingBox").style.display = "none";
-
+function completeMoment(){
+ closeModal(); addPoints(5); toast("Pięknie 💗 +5 punktów");
 }
-
-function relaxMessage(message) {
-
-    showToast(message);
-
+function closeModal(){document.getElementById("modal").classList.remove("show")}
+function selectMood(i){
+ ensureDay();
+ const m=moods[i];
+ const t=today();
+ state.moodHistory=state.moodHistory.filter(x=>x.date!==t);
+ state.moodHistory.push({date:t,v:m.v,n:m.n,e:m.e});
+ state.moodHistory.sort((a,b)=>a.date.localeCompare(b.date));
+ state.moodHistory=state.moodHistory.slice(-30);
+ save(); toast("Zapisano Twój nastrój 💗"); renderAll();
 }
-
-
-/* =========================
-   WYZWANIA
-========================= */
-
-const challenges = [
-
-{
-    id:"water",
-    title:"💧 Zadbaj o nawodnienie",
-    text:"Wypij dziś odpowiednią ilość wody.",
-    points:10
-},
-
-{
-    id:"walk",
-    title:"🌿 10 minut dla siebie",
-    text:"Wyjdź na spokojny spacer.",
-    points:15
-},
-
-{
-    id:"phone",
-    title:"📵 Godzina bez telefonu",
-    text:"Odłóż telefon i daj głowie odpocząć.",
-    points:20
-},
-
-{
-    id:"gratitude",
-    title:"💗 3 rzeczy",
-    text:"Zapisz trzy rzeczy, za które jesteś wdzięczna.",
-    points:15
-},
-
-{
-    id:"relax",
-    title:"🧘 Chwila relaksu",
-    text:"Wykonaj krótkie ćwiczenie oddechowe.",
-    points:15
-},
-
-{
-    id:"kindness",
-    title:"🌷 Zrób coś dobrego",
-    text:"Zrób dziś coś miłego dla siebie.",
-    points:10
+function renderMoods(){
+ const box=document.getElementById("moods"), todayMood=state.moodHistory.find(x=>x.date===today());
+ box.innerHTML=moods.map((m,i)=>`<button class="mood ${todayMood&&todayMood.v===m.v?"selected":""}" onclick="selectMood(${i})"><div class="emoji">${m.e}</div><span>${m.n}</span></button>`).join("");
+ document.getElementById("moodLabel").textContent=todayMood?todayMood.n:"Nie wybrano";
 }
-
-];
-
-function renderChallenges() {
-
-    const list =
-        document.getElementById("challengeList");
-
-    list.innerHTML = "";
-
-    challenges.forEach(challenge => {
-
-        const done = completed[challenge.id] || false;
-
-        const div = document.createElement("div");
-
-        div.className = "challenge";
-
-        div.innerHTML = `
-
-            <div class="challenge-top">
-
-                <div>
-
-                    <h3>${challenge.title}</h3>
-
-                    <p>${challenge.text}</p>
-
-                </div>
-
-                <button
-                    class="check-btn"
-                    onclick="completeChallenge('${challenge.id}',${challenge.points})"
-                    ${done ? "disabled" : ""}
-                >
-                    ${done ? "✓ Gotowe" : "Zrób"}
-                </button>
-
-            </div>
-
-            <div class="progress">
-
-                <div
-                    class="progress-bar"
-                    style="width:${done ? 100 : 0}%">
-                </div>
-
-            </div>
-
-        `;
-
-        list.appendChild(div);
-
-    });
-
+function allTasks(){
+ return [...baseTasks,...(state.customTasks||[])];
 }
-
-function completeChallenge(id, challengePoints) {
-
-    if(completed[id]) return;
-
-    completed[id] = true;
-
-    localStorage.setItem(
-        "mojeChallenges",
-        JSON.stringify(completed)
-    );
-
-    points += challengePoints;
-
-    localStorage.setItem(
-        "mojePoints",
-        points
-    );
-
-    showToast(
-        "🏆 Zadanie wykonane! +" +
-        challengePoints +
-        " punktów"
-    );
-
-    renderChallenges();
-
-    updateProfile();
-
+function renderTasks(){
+ const box=document.getElementById("tasks");
+ box.innerHTML=allTasks().map(x=>{
+  const done=!!state.tasks[dayKey(x.id)];
+  return `<div class="task ${done?"done":""}"><button class="check" onclick="toggleTask('${x.id}')">${done?"✓":""}</button><div><b>${x.e} ${x.t}</b><small>${x.d}</small></div><span class="reward">+${x.p}</span></div>`;
+ }).join("");
+ const done=allTasks().filter(x=>state.tasks[dayKey(x.id)]).length;
+ const pct=Math.round(done/allTasks().length*100);
+ document.getElementById("dayPercent").textContent=pct+"%";
+ document.getElementById("dayProgress").style.width=pct+"%";
 }
-
-
-/* =========================
-   PROFIL
-========================= */
-
-function saveName() {
-
-    const input =
-        document.getElementById("nameInput");
-
-    const name = input.value.trim();
-
-    if(!name) {
-
-        showToast("Wpisz swoje imię ❤️");
-
-        return;
-    }
-
-    userName = name;
-
-    localStorage.setItem(
-        "mojeName",
-        userName
-    );
-
-    updateProfile();
-
-    showToast("🌷 Zapisano");
-
+function toggleTask(id){
+ ensureDay();
+ const key=dayKey(id), task=allTasks().find(x=>x.id===id);
+ if(!task)return;
+ if(state.tasks[key]){delete state.tasks[key];state.points=Math.max(0,state.points-task.p);toast("Zadanie cofnięte");}
+ else{state.tasks[key]=true;state.points+=task.p;toast("Zadanie ukończone 💗 +"+task.p+" pkt");}
+ save();renderAll();
 }
-
-function updateProfile() {
-
-    if(userName) {
-
-        document.getElementById("profileName")
-            .innerText = userName;
-
-        document.getElementById("nameInput")
-            .value = userName;
-
-    }
-
-    document.getElementById("points")
-        .innerText = points;
-
-    document.getElementById("completedChallenges")
-        .innerText =
-        Object.values(completed)
-        .filter(Boolean).length;
-
-    document.getElementById("daysActive")
-        .innerText = activeDays.length;
-
-    updateBadges();
-
+function addCustomTask(){
+ const name=prompt("Nazwa Twojego zadania:");
+ if(!name)return;
+ const id="custom_"+Date.now();
+ state.customTasks.push({id,e:"✨",t:name,d:"Twoje własne zadanie dla siebie.",p:10});
+ save();renderAll();toast("Dodano zadanie ✨");
 }
-
-function updateBadges() {
-
-    const challengeCount =
-        Object.values(completed)
-        .filter(Boolean).length;
-
-    unlockBadge("badge1", moods.length >= 1);
-
-    unlockBadge("badge2", moods.length >= 3);
-
-    unlockBadge("badge3", challengeCount >= 3);
-
-    unlockBadge("badge4", challengeCount >= 5);
-
-    unlockBadge("badge5", points >= 50);
-
-    unlockBadge("badge6", points >= 150);
-
+function startBreathing(){
+ const circle=document.getElementById("breathCircle"), title=document.getElementById("breathTitle"), text=document.getElementById("breathText");
+ let sec=0, phase=0;
+ const phases=[["Wdech","Powoli nabierz powietrza…"],["Wydech","Powoli wypuść powietrze…"]];
+ const timer=setInterval(()=>{
+  sec++;
+  phase=(phase+1)%2;
+  title.textContent=phases[phase][0];text.textContent=phases[phase][1];
+  circle.textContent=phase?"🌬️":"🌿";
+  if(sec>=60){clearInterval(timer);title.textContent="Gotowe 💗";text.textContent="Dobra robota. Dałaś sobie minutę spokoju.";circle.textContent="🌷";addPoints(10);toast("Ćwiczenie ukończone +10 pkt")}
+ },1000);
 }
-
-function unlockBadge(id, unlocked) {
-
-    const badge =
-        document.getElementById(id);
-
-    if(unlocked) {
-
-        badge.classList.remove("locked");
-
-    } else {
-
-        badge.classList.add("locked");
-
-    }
-
+function renderChart(){
+ const box=document.getElementById("chart");
+ const days=[];
+ for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);const m=state.moodHistory.find(x=>x.date===ds);days.push({ds,v:m?m.v:0})}
+ box.innerHTML=days.map(x=>`<div class="barwrap"><div class="bar" style="height:${x.v?x.v*20+"%":"6px"}"></div><div class="barlabel">${x.ds.slice(5)}</div></div>`).join("");
 }
-
-
-/* =========================
-   TOAST
-========================= */
-
-function showToast(message) {
-
-    const toast =
-        document.getElementById("toast");
-
-    toast.innerText = message;
-
-    toast.style.display = "block";
-
-    clearTimeout(window.toastTimer);
-
-    window.toastTimer = setTimeout(() => {
-
-        toast.style.display = "none";
-
-    },3500);
-
+function renderHistory(){
+ const box=document.getElementById("history"), h=[...state.moodHistory].reverse().slice(0,10);
+ box.innerHTML=h.length?h.map(x=>`<div class="task"><span style="font-size:28px">${x.e}</span><div><b>${x.n}</b><small>${x.date}</small></div></div>`).join(""):`<div class="empty">Nie ma jeszcze historii. Wybierz swój nastrój na Start.</div>`;
 }
-
-
-/* =========================
-   CYTATY
-========================= */
-
-const quotes = [
-
-"Nie musisz być silna cały czas. Możesz po prostu być.",
-
-"Twoje potrzeby też są ważne.",
-
-"Małe kroki prowadzą do wielkich zmian.",
-
-"Zasługujesz na odpoczynek bez poczucia winy.",
-
-"Nie porównuj swojego początku z czyimś środkiem.",
-
-"Dzisiaj wybierz siebie.",
-
-"Jesteś ważna. Tak po prostu.",
-
-"Nie wszystko musi być zrobione dzisiaj.",
-
-"Pozwól sobie zwolnić.",
-
-"Dbając o siebie, nie jesteś egoistką."
-
-];
-
-function dailyQuote() {
-
-    const day =
-        Math.floor(
-            new Date().getTime() /
-            (1000*60*60*24)
-        );
-
-    document.getElementById("dailyQuote")
-        .innerText =
-        quotes[day % quotes.length];
-
+function renderChallenges(){
+ const box=document.getElementById("challengeList");
+ box.innerHTML=challenges.map(x=>{
+  const done=!!state.tasks[dayKey(x.id)];
+  return `<div class="task ${done?"done":""}"><button class="check" onclick="toggleChallenge('${x.id}')">${done?"✓":""}</button><div><b>${x.e} ${x.t}</b><small>${x.d}</small></div><span class="reward">+${x.p}</span></div>`
+ }).join("");
+ const xp=state.points%100, lvl=Math.floor(state.points/100)+1;
+ document.getElementById("challengeLevel").textContent=lvl;
+ document.getElementById("xpText").textContent=xp+" / 100 XP";
+ document.getElementById("xpBar").style.width=xp+"%";
+ const badges=[
+  ["🌱","Pierwszy krok","Ukończ pierwsze zadanie",state.points>=5],
+  ["💗","Dbam o siebie","Zdobądź 50 punktów",state.points>=50],
+  ["🔥","Wytrwałość","Osiągnij 3 dni z rzędu",state.streak>=3],
+  ["🌷","Tydzień dla siebie","Osiągnij 7 dni z rzędu",state.streak>=7],
+  ["🏆","100 punktów","Zdobądź 100 punktów",state.points>=100],
+  ["✨","Poziom 5","Osiągnij 5. poziom",lvl>=5]
+ ];
+ document.getElementById("badges").innerHTML=badges.map(b=>`<div class="badge ${b[3]?"":"locked"}"><div class="big">${b[0]}</div><b>${b[1]}</b><small>${b[2]}</small></div>`).join("");
 }
-
-dailyQuote();
-
-
-/* =========================
-   START
-========================= */
-
-renderHistory();
-
-renderChallenges();
-
-updateProfile();
-/* =========================
-   TWÓJ DZIEŃ
-========================= */
-
-const todayTasks = [
-    {
-        id: "today_water",
-        text: "💧 Wypij szklankę wody",
-        points: 5
-    },
-    {
-        id: "today_pause",
-        text: "🌷 Zrób 5 minut tylko dla siebie",
-        points: 10
-    },
-    {
-        id: "today_breathe",
-        text: "🧘 Zrób 2 minuty spokojnego oddechu",
-        points: 10
-    }
-];
-
-function getTodayKey() {
-    return new Date().toISOString().slice(0, 10);
+function toggleChallenge(id){
+ const x=challenges.find(y=>y.id===id),key=dayKey(id);
+ if(!x)return;
+ if(state.tasks[key]){delete state.tasks[key];state.points=Math.max(0,state.points-x.p);toast("Wyzwanie cofnięte")}
+ else{state.tasks[key]=true;state.points+=x.p;toast("Wyzwanie ukończone 🏆 +"+x.p+" pkt")}
+ save();renderAll();
 }
-
-function getTodayCompleted() {
-    return JSON.parse(
-        localStorage.getItem("todayTasks_" + getTodayKey())
-    ) || {};
+function saveName(){
+ state.name=document.getElementById("nameInput").value.trim().slice(0,30);
+ save();renderAll();toast(state.name?`Miło Cię widzieć, ${state.name}! 🌷`:"Imię zapisane");
 }
-
-function saveTodayCompleted(data) {
-    localStorage.setItem(
-        "todayTasks_" + getTodayKey(),
-        JSON.stringify(data)
-    );
+function renderProfile(){
+ document.getElementById("nameInput").value=state.name||"";
+ document.getElementById("profilePoints").textContent=state.points;
+ document.getElementById("profileStreak").textContent=state.streak;
+ document.getElementById("profileTasks").textContent=Object.values(state.tasks).filter(Boolean).length;
+ document.getElementById("greeting").textContent=state.name?`Miło Cię widzieć, ${state.name}. Znajdź dziś chwilę tylko dla siebie.`:"Znajdź dziś chwilę tylko dla siebie.";
 }
-
-function renderTodayTasks() {
-
-    const container =
-        document.getElementById("todayTasks");
-
-    if (!container) return;
-
-    const completedToday = getTodayCompleted();
-
-    container.innerHTML = "";
-
-    todayTasks.forEach(task => {
-
-        const done = completedToday[task.id] === true;
-
-        const item = document.createElement("div");
-
-        item.className =
-            "today-task" + (done ? " done" : "");
-
-        item.innerHTML = `
-            <button
-                class="task-check"
-                onclick="completeTodayTask('${task.id}', ${task.points})">
-                ${done ? "✓" : ""}
-            </button>
-
-            <div class="task-text">
-                ${task.text}
-            </div>
-
-            <div class="task-points">
-                +${task.points}
-            </div>
-        `;
-
-        container.appendChild(item);
-    });
-
-    updateTodayProgress();
+function resetApp(){
+ if(confirm("Na pewno usunąć cały lokalny postęp?")){
+  localStorage.removeItem(KEY);location.reload();
+ }
 }
-
-function completeTodayTask(id, taskPoints) {
-
-    const completedToday = getTodayCompleted();
-
-    if (completedToday[id]) return;
-
-    completedToday[id] = true;
-
-    saveTodayCompleted(completedToday);
-
-    points += taskPoints;
-
-    localStorage.setItem(
-        "mojePoints",
-        points
-    );
-
-    showToast(
-        "🌷 Brawo! +" + taskPoints + " punktów"
-    );
-
-    renderTodayTasks();
-    updateProfile();
+function clearMoodHistory(){
+ if(confirm("Wyczyścić historię nastroju?")){state.moodHistory=[];save();renderAll();toast("Historia wyczyszczona")}
 }
-
-function updateTodayProgress() {
-
-    const completedToday = getTodayCompleted();
-
-    const done =
-        todayTasks.filter(
-            task => completedToday[task.id]
-        ).length;
-
-    const percent =
-        Math.round(
-            (done / todayTasks.length) * 100
-        );
-
-    const number =
-        document.getElementById("todayProgress");
-
-    const bar =
-        document.getElementById("todayProgressBar");
-
-    if (number) {
-        number.innerText = percent + "%";
-    }
-
-    if (bar) {
-        bar.style.width = percent + "%";
-    }
-
-    if (percent === 100) {
-        showToast("🏆 Twój dzień ukończony! Świetna robota ❤️");
-    }
+function renderStats(){
+ document.getElementById("points").textContent=state.points;
+ document.getElementById("streak").textContent=state.streak;
+ document.getElementById("level").textContent=Math.floor(state.points/100)+1;
 }
-
-renderTodayTasks();
+function renderAll(){
+ ensureDay();renderMoods();renderTasks();renderStats();renderChart();renderHistory();renderChallenges();renderProfile();
+}
+renderAll();
 </script>
-
 </body>
 </html>
