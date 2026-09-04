@@ -90,7 +90,7 @@ header{padding:20px 20px 8px}
     <div class="eyebrow">Twoja chwila na dziś</div>
     <h2>Nie musisz zrobić wszystkiego. Wystarczy, że zadbasz dziś o siebie.</h2>
     <p>Mały krok też jest krokiem. Wybierz jedną rzecz, którą możesz zrobić dla siebie.</p>
-    <button class="primary" onclick="chooseMoment()">✨ Wybierz coś dla mnie</button>
+    <button class="primary" onclick="chooseMoment()">✨ Wybierz coś dla mnie</button><button class="secondary" style="width:100%;margin-top:10px" onclick="showDailyInsight()">💡 Potrzebuję dziś wsparcia</button>
   </div>
 
   <div class="card">
@@ -275,6 +275,14 @@ function selectMood(i){
  state.moodHistory.sort((a,b)=>a.date.localeCompare(b.date));
  state.moodHistory=state.moodHistory.slice(-30);
  save(); toast("Zapisano Twój nastrój 💗"); renderAll();
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function showDailyInsight(){
+ const tips=["Dziś nie musisz być idealna. Wystarczy, że będziesz dla siebie dobra. 💗","Zatrzymaj się na minutę i zapytaj: czego naprawdę teraz potrzebuję? 🌷","Twój odpoczynek nie jest stratą czasu. To część dbania o siebie. 🌿","Mały krok wykonany dziś może być początkiem dużej zmiany. ✨"];
+ const i=new Date().getDate()%tips.length; toast(tips[i]);
+}
+function celebrateIfNeeded(){
+ if(state.points>0 && state.points%50===0) setTimeout(()=>toast("🎉 Brawo! Masz już "+state.points+" punktów!"),350);
 }
 function renderMoods(){
  const box=document.getElementById("moods"), todayMood=state.moodHistory.find(x=>x.date===today());
