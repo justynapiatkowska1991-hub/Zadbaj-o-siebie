@@ -165,7 +165,7 @@ header{padding:20px 20px 8px}
 
 <section id="journal" class="screen">
   <div class="page-head"><h2>📔 Dziennik</h2><p>Zapisz to, co chcesz zachować dla siebie.</p></div>
-  <div class="card form"><textarea id="journalInput" maxlength="1000" placeholder="Jak się dziś masz? Co jest teraz dla Ciebie ważne?" style="width:100%;min-height:150px;padding:15px;border:1px solid #eadde1;border-radius:15px;resize:vertical"></textarea><button class="primary" style="margin-top:10px" onclick="saveJournal()">💗 Zapisz wpis</button><button class="secondary" style="margin-top:10px;margin-left:8px" onclick="exportJournal()">⬇️ Eksportuj dziennik</button></div>
+  <div class="card form"><textarea id="journalInput" maxlength="1000" placeholder="Jak się dziś masz? Co jest teraz dla Ciebie ważne?" style="width:100%;min-height:150px;padding:15px;border:1px solid #eadde1;border-radius:15px;resize:vertical"></textarea><button class="primary" style="margin-top:10px" onclick="saveJournal()">💗 Zapisz wpis</button><button class="secondary" style="margin-top:10px;margin-left:8px" onclick="exportJournal()">⬇️ Eksportuj dziennik</button><button class="secondary" style="margin-top:10px;margin-left:8px" onclick="clearJournal()">🗑️ Wyczyść</button></div>
   <div class="card"><h3>Ostatnie wpisy</h3><div id="journalHistory"></div></div>
 </section>
 
@@ -382,6 +382,11 @@ function toggleChallenge(id){
  if(state.tasks[key]){delete state.tasks[key];state.points=Math.max(0,state.points-x.p);toast("Wyzwanie cofnięte")}
  else{state.tasks[key]=true;state.points+=x.p;toast("Wyzwanie ukończone 🏆 +"+x.p+" pkt")}
  save();renderAll();
+}
+function clearJournal(){
+ if(!(state.journal||[]).length){toast("Dziennik jest pusty");return}
+ if(!confirm("Czy na pewno chcesz usunąć wszystkie wpisy? Tej operacji nie można cofnąć."))return;
+ state.journal=[];save();renderJournal();renderBadges();toast("Dziennik został wyczyszczony");
 }
 function exportJournal(){
  const entries=state.journal||[];
