@@ -1490,7 +1490,146 @@ renderHistory();
 renderChallenges();
 
 updateProfile();
+/* =========================
+   TWÓJ DZIEŃ
+========================= */
 
+const todayTasks = [
+    {
+        id: "today_water",
+        text: "💧 Wypij szklankę wody",
+        points: 5
+    },
+    {
+        id: "today_pause",
+        text: "🌷 Zrób 5 minut tylko dla siebie",
+        points: 10
+    },
+    {
+        id: "today_breathe",
+        text: "🧘 Zrób 2 minuty spokojnego oddechu",
+        points: 10
+    }
+];
+
+function getTodayKey() {
+    return new Date().toISOString().slice(0, 10);
+}
+
+function getTodayCompleted() {
+    return JSON.parse(
+        localStorage.getItem("todayTasks_" + getTodayKey())
+    ) || {};
+}
+
+function saveTodayCompleted(data) {
+    localStorage.setItem(
+        "todayTasks_" + getTodayKey(),
+        JSON.stringify(data)
+    );
+}
+
+function renderTodayTasks() {
+
+    const container =
+        document.getElementById("todayTasks");
+
+    if (!container) return;
+
+    const completedToday = getTodayCompleted();
+
+    container.innerHTML = "";
+
+    todayTasks.forEach(task => {
+
+        const done = completedToday[task.id] === true;
+
+        const item = document.createElement("div");
+
+        item.className =
+            "today-task" + (done ? " done" : "");
+
+        item.innerHTML = `
+            <button
+                class="task-check"
+                onclick="completeTodayTask('${task.id}', ${task.points})">
+                ${done ? "✓" : ""}
+            </button>
+
+            <div class="task-text">
+                ${task.text}
+            </div>
+
+            <div class="task-points">
+                +${task.points}
+            </div>
+        `;
+
+        container.appendChild(item);
+    });
+
+    updateTodayProgress();
+}
+
+function completeTodayTask(id, taskPoints) {
+
+    const completedToday = getTodayCompleted();
+
+    if (completedToday[id]) return;
+
+    completedToday[id] = true;
+
+    saveTodayCompleted(completedToday);
+
+    points += taskPoints;
+
+    localStorage.setItem(
+        "mojePoints",
+        points
+    );
+
+    showToast(
+        "🌷 Brawo! +" + taskPoints + " punktów"
+    );
+
+    renderTodayTasks();
+    updateProfile();
+}
+
+function updateTodayProgress() {
+
+    const completedToday = getTodayCompleted();
+
+    const done =
+        todayTasks.filter(
+            task => completedToday[task.id]
+        ).length;
+
+    const percent =
+        Math.round(
+            (done / todayTasks.length) * 100
+        );
+
+    const number =
+        document.getElementById("todayProgress");
+
+    const bar =
+        document.getElementById("todayProgressBar");
+
+    if (number) {
+        number.innerText = percent + "%";
+    }
+
+    if (bar) {
+        bar.style.width = percent + "%";
+    }
+
+    if (percent === 100) {
+        showToast("🏆 Twój dzień ukończony! Świetna robota ❤️");
+    }
+}
+
+renderTodayTasks();
 </script>
 
 </body>
