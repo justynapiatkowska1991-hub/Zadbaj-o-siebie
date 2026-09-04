@@ -1,0 +1,10 @@
+{
+  "name":"Moja Chwila – Zadbaj o siebie",
+  "short_name":"Moja Chwila",
+  "start_url":"./",
+  "display":"standalone",
+  "background_color":"#fff8f7",
+  "theme_color":"#a35e77",
+  "lang":"pl",
+  "description":"Codzienna przestrzeń do dbania o siebie, emocje, relaks i małe kroki."
+}
