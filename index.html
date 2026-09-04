@@ -74,7 +74,9 @@ header{padding:20px 20px 8px}
 .empty{text-align:center;color:#999;padding:20px}
 @media(max-width:420px){.brand h1{font-size:32px}.hero h2{font-size:29px}.mood .emoji{font-size:26px}.moods{gap:4px}.card{padding:18px}}
 </style>
-</head>
+<style>
+.dailyquote{font-style:italic;color:#6f696d;line-height:1.55;margin-top:8px}.quickgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.quick{padding:16px;border-radius:18px;background:#fff7f9;text-align:left;color:var(--text)}.quick span{font-size:28px;display:block;margin-bottom:7px}.quick b{display:block}.quick small{color:#888}.levelnote{margin-top:10px;color:#777;font-size:13px}
+</style></head>
 <body>
 <div class="app">
 <header>
@@ -94,7 +96,7 @@ header{padding:20px 20px 8px}
   </div>
 
   <div class="card">
-    <div class="section-title"><h3>Jak się dziś czujesz?</h3><span class="muted" id="moodLabel">Nie wybrano</span></div>
+    <div class="card"><div class="eyebrow">Mała motywacja</div><div id="dailyQuote" class="dailyquote"></div></div><div class="section-title"><h3>Jak się dziś czujesz?</h3><span class="muted" id="moodLabel">Nie wybrano</span></div>
     <div class="moods" id="moods"></div>
   </div>
 
@@ -108,7 +110,7 @@ header{padding:20px 20px 8px}
     </div>
   </div>
 
-  <div class="section-title"><h3>Dzisiejsze zadania</h3><button class="smallbtn" onclick="addCustomTask()">+ własne</button></div>
+  <div class="section-title"><h3>Co możesz zrobić teraz?</h3></div><div class="quickgrid"><button class="quick" onclick="showScreen('relax')"><span>🧘</span><b>Oddech</b><small>1 minuta spokoju</small></button><button class="quick" onclick="showScreen('journal')"><span>📔</span><b>Dziennik</b><small>Zapisz myśli</small></button><button class="quick" onclick="showScreen('challenges')"><span>🌱</span><b>Wyzwanie</b><small>Zrób mały krok</small></button><button class="quick" onclick="chooseMoment()"><span>✨</span><b>Losuj chwilę</b><small>Coś dobrego dla Ciebie</small></button></div><div class="section-title"><h3>Dzisiejsze zadania</h3><button class="smallbtn" onclick="addCustomTask()">+ własne</button></div>
   <div id="tasks"></div>
 </section>
 
@@ -409,13 +411,14 @@ function resetApp(){
 function clearMoodHistory(){
  if(confirm("Wyczyścić historię nastroju?")){state.moodHistory=[];save();renderAll();toast("Historia wyczyszczona")}
 }
+function renderDailyQuote(){const q=["Nie musisz zasługiwać na odpoczynek. Możesz po prostu odpocząć. 💗","Dzisiaj wybierz łagodność zamiast presji. 🌷","Twoje potrzeby też są ważne. Znajdź dla nich choć kilka minut. 🌿","Idź swoim tempem. Mały krok też ma znaczenie. ✨","Jedna mała rzecz dla siebie wystarczy na dobry początek. 💕"];const el=document.getElementById("dailyQuote");if(el)el.textContent=q[new Date().getDate()%q.length]}
 function renderStats(){
  document.getElementById("points").textContent=state.points;
  document.getElementById("streak").textContent=state.streak;
  document.getElementById("level").textContent=Math.floor(state.points/100)+1;
 }
 function renderAll(){
- ensureDay();renderMoods();renderTasks();renderStats();renderChart();renderHistory();renderChallenges();renderJournal();renderProfile();
+ ensureDay();renderMoods();renderTasks();renderStats();renderDailyQuote();renderChart();renderHistory();renderChallenges();renderJournal();renderProfile();
 }
 renderAll();
 </script>
