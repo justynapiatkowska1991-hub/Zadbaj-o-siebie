@@ -80,7 +80,7 @@ header{padding:20px 20px 8px}
 </style>
 <style>
 .dailyquote{font-style:italic;color:#6f696d;line-height:1.55;margin-top:8px}.quickgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.quick{padding:16px;border-radius:18px;background:#fff7f9;text-align:left;color:var(--text)}.quick span{font-size:28px;display:block;margin-bottom:7px}.quick b{display:block}.quick small{color:#888}.levelnote{margin-top:10px;color:#777;font-size:13px}
-</style></head>
+</style><style>.affirmation{background:linear-gradient(135deg,#f8e8ee,#fff);border:1px solid #f0d7df}.affirmation p{font-size:19px;line-height:1.5;margin:10px 0}.mini-actions{display:flex;gap:8px;flex-wrap:wrap}.mini-actions button{flex:1;min-width:120px}</style></head>
 <body>
 <div class="app">
 <header>
@@ -92,6 +92,8 @@ header{padding:20px 20px 8px}
 
 <main>
 <section id="start" class="screen active">
+  <div class="card affirmation"><div class="eyebrow">💗 Przypomnienie</div><p id="affirmationText">Jesteś ważna. Twoje potrzeby też są ważne.</p><div class="mini-actions"><button class="secondary" onclick="newAffirmation()">✨ Inna myśl</button><button class="secondary" onclick="showScreen('journal')">📔 Zapisz w dzienniku</button></div></div>
+
   <div class="card hero">
     <div class="eyebrow">Twoja chwila na dziś</div>
     <h2>Nie musisz zrobić wszystkiego. Wystarczy, że zadbasz dziś o siebie.</h2>
@@ -419,6 +421,7 @@ function resetApp(){
 function clearMoodHistory(){
  if(confirm("Wyczyścić historię nastroju?")){state.moodHistory=[];save();renderAll();toast("Historia wyczyszczona")}
 }
+function newAffirmation(){const a=["Jesteś ważna. Twoje potrzeby też są ważne. 💗","Nie musisz mieć wszystkiego pod kontrolą, żeby zrobić kolejny krok. 🌷","Możesz zwolnić. Możesz odpocząć. Możesz zacząć od nowa. 🌿","To, że dziś jest trudno, nie oznacza, że tak będzie zawsze. ✨","Zasługujesz na troskę również od samej siebie. 💕","Nie porównuj swojej drogi z drogą innych. Twoje tempo jest w porządku. 🌸"];const el=document.getElementById("affirmationText");if(el)el.textContent=a[Math.floor(Math.random()*a.length)]}
 function renderDailyQuote(){const q=["Nie musisz zasługiwać na odpoczynek. Możesz po prostu odpocząć. 💗","Dzisiaj wybierz łagodność zamiast presji. 🌷","Twoje potrzeby też są ważne. Znajdź dla nich choć kilka minut. 🌿","Idź swoim tempem. Mały krok też ma znaczenie. ✨","Jedna mała rzecz dla siebie wystarczy na dobry początek. 💕"];const el=document.getElementById("dailyQuote");if(el)el.textContent=q[new Date().getDate()%q.length]}
 function renderStats(){
  document.getElementById("points").textContent=state.points;
