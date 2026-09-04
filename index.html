@@ -5,7 +5,99 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <title>Moja Chwila</title>
+.today-card {
+    background: linear-gradient(135deg, #fff, #fdf3f5);
+}
 
+.today-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.today-title small {
+    color: #a35e77;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.today-title h2 {
+    margin: 7px 0 0;
+}
+
+.today-score {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #f4dfe6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.today-score strong {
+    color: #9c5d74;
+    font-size: 14px;
+}
+
+.today-progress {
+    height: 10px;
+    background: #eee;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+#todayProgressBar {
+    height: 100%;
+    width: 0%;
+    background: #a35e77;
+    border-radius: 20px;
+    transition: width .4s ease;
+}
+
+.today-task {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    margin-top: 10px;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid #f1e6e9;
+}
+
+.today-task.done {
+    opacity: .6;
+}
+
+.task-check {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px solid #d9a9b9;
+    background: white;
+    color: #a35e77;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.today-task.done .task-check {
+    background: #a35e77;
+    color: white;
+}
+
+.task-text {
+    font-size: 15px;
+    line-height: 1.3;
+}
+
+.task-points {
+    margin-left: auto;
+    color: #a35e77;
+    font-size: 12px;
+    font-weight: bold;
+}
 <style>
 * {
     box-sizing: border-box;
